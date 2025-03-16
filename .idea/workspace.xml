@@ -66,7 +66,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/marcg/OneDrive/Documents/Programacio/Kotlin/Practica_PlataformesEnXarxa",
     "settings.editor.selected.configurable": "preferences.language.Kotlin"
@@ -179,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742124711240</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Password change">
+      <option name="closed" value="true" />
+      <created>1742124993437</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1742124993437</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
