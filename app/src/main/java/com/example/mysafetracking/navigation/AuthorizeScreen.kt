@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
+import com.example.mysafetracking.logic.validateLogin
+import com.example.mysafetracking.logic.validateRegister
 
 @Composable
 fun AuthorizeScreen(navController: NavHostController) {
@@ -42,7 +45,7 @@ fun AuthorizeScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Texto "Benvingut a"
+            // Text "Benvingut a MySafeTracking"
             Text(
                 text = "Benvingut a ${stringResource(R.string.app_name)}",
                 fontSize = 24.sp,
@@ -50,7 +53,7 @@ fun AuthorizeScreen(navController: NavHostController) {
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
-            // Botón "Iniciar Sessió"
+            // Botó "Iniciar Sessió"
             Button(
                 onClick = { navController.navigate("loginForm") },
                 modifier = Modifier
@@ -61,7 +64,7 @@ fun AuthorizeScreen(navController: NavHostController) {
                 Text(text = "Iniciar Sessió", fontSize = 18.sp)
             }
 
-            // Botón "Crear una Compte"
+            // Botó "Crear un Compte"
             Button(
                 onClick = { navController.navigate("register") },
                 modifier = Modifier
@@ -82,6 +85,18 @@ fun AuthorizeScreen(navController: NavHostController) {
 fun LoginScreen(navController: NavHostController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var isValid by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+
+    // Validar sol quan l'usuari faci click al botó
+    fun handleLogin() {
+        isValid = validateLogin(email, password)
+        errorMessage = if (isValid) "" else "Omple correctament tots els camps"
+        if (isValid) {
+            // Aquí va la logica de verificar les credencials
+            navController.navigate("gifScreen") // Canviar "gifScreen" per la ruta correcta
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -110,7 +125,7 @@ fun LoginScreen(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(MaterialTheme.colorScheme.background), // Fondo
+                .background(MaterialTheme.colorScheme.background),
             contentAlignment = Alignment.Center,
         ) {
             Column(
@@ -125,7 +140,7 @@ fun LoginScreen(navController: NavHostController) {
                     modifier = Modifier.padding(bottom = 32.dp)
                 )
 
-                // Campo de email
+                // Camp d'email
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
@@ -135,7 +150,7 @@ fun LoginScreen(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
 
-                // Campo de contraseña
+                // Camp de contrasenya
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -146,13 +161,18 @@ fun LoginScreen(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
 
-                // Botón de iniciar sesión
+                // Mostrar missatge d'error si el login falla
+                if (errorMessage.isNotEmpty()) {
+                    Text(text = errorMessage, color = Color.Red, fontSize = 14.sp)
+                }
+
+
+                // Botó d'iniciar sessió
                 Button(
                     onClick = {
-                        // Aquí iría la lógica para verificar las credenciales
-                        // Después de la validación, navegar a la GifScreen
-                        navController.navigate("gifScreen") // Cambiar "gifScreen" por la ruta correcta
+                        handleLogin()
                     },
+                    enabled = email.isNotBlank() && password.isNotBlank(),
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 48.dp, max = 56.dp)
@@ -161,7 +181,7 @@ fun LoginScreen(navController: NavHostController) {
                     Text(text = "Iniciar Sessió", fontSize = 18.sp)
                 }
 
-                // Botón de registrarse
+                // Botó de registrar-se
                 TextButton(
                     onClick = {
                         navController.popBackStack()
@@ -185,6 +205,19 @@ fun RegisterScreen(navController: NavHostController) {
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
+    var isValid by remember { mutableStateOf(false) }
+
+    // Funció que maneja el registre
+    fun handleRegister() {
+        isValid = validateRegister(firstName, lastName, email, password)
+        errorMessage = if (isValid) "" else "Omple correctament tots els camps"
+        if (isValid) {
+            // Aquí va la lógica per a refistrar l'usuari
+            // Després de registrar-se, navegar a la GifScreen
+            navController.navigate("gifScreen") // Canviar "gifScreen" per la ruta correcta
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -220,7 +253,7 @@ fun RegisterScreen(navController: NavHostController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Título
+                // Títol
                 Text(
                     text = "Crear un Compte",
                     fontSize = 24.sp,
@@ -228,7 +261,7 @@ fun RegisterScreen(navController: NavHostController) {
                     modifier = Modifier.padding(bottom = 32.dp)
                 )
 
-                // Campo de nombre
+                // Camp nom
                 OutlinedTextField(
                     value = firstName,
                     onValueChange = { firstName = it },
@@ -238,7 +271,7 @@ fun RegisterScreen(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
 
-                // Campo de apellido
+                // Camp cognoms
                 OutlinedTextField(
                     value = lastName,
                     onValueChange = { lastName = it },
@@ -248,7 +281,7 @@ fun RegisterScreen(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
 
-                // Campo de email
+                // Camp email
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
@@ -258,7 +291,7 @@ fun RegisterScreen(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
 
-                // Campo de contraseña
+                // Camp de contrasenya
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -269,13 +302,17 @@ fun RegisterScreen(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
 
-                // Botón de registro
+                // Mostrar missatge d'error si la validació falla
+                if (errorMessage.isNotEmpty()) {
+                    Text(text = errorMessage, color = Color.Red, fontSize = 14.sp)
+                }
+
+                // Botó de registre
                 Button(
                     onClick = {
-                        // Aquí iría la lógica para registrarse
-                        // Después de registrarse, navegar a la GifScreen
-                        navController.navigate("gifScreen") // Cambiar "gifScreen" por la ruta correcta
+                        handleRegister()
                     },
+                    enabled = firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && password.isNotBlank(),
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 48.dp, max = 56.dp)
@@ -284,7 +321,7 @@ fun RegisterScreen(navController: NavHostController) {
                     Text(text = "Registrar-se", fontSize = 18.sp)
                 }
 
-                // Botón de volver al login
+                // Botó de login
                 TextButton(
                     onClick = {
                         navController.popBackStack()

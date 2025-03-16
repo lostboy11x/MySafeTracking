@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 open class User(
     val id: String = "",
     val name: String = "",
-    val surname: String = "",
+    val lastname: String = "",
     val email: String = ""
 )
 
