@@ -218,14 +218,12 @@ fun RegisterScreen(navController: NavHostController) {
 
     // Funció que maneja el registre
     fun handleRegister() {
-        isValid = validateRegister(firstName, lastName, email, password)
-        errorMessage = if (isValid) "" else "Omple correctament tots els camps"
-        if (isValid) {
-            // Aquí va la lógica per a refistrar l'usuari
+        errorMessage = validateRegister(firstName, lastName, email, password)
+        if (errorMessage.isEmpty()) {
+            // Aquí va la lógica per a registrar l'usuari
             // Després de registrar-se, navegar a la GifScreen
-            navController.navigate("gifScreen") {   // Canviar "gifScreen" per la ruta correcta
+            navController.navigate("gifScreen") {
                 popUpTo("register") { inclusive = true }
-
             }
         }
     }
