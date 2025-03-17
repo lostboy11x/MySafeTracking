@@ -1,4 +1,4 @@
-package com.example.mysafetracking.navigation
+package com.example.mysafetracking.screens
 
 import android.widget.ImageView
 import androidx.compose.foundation.layout.*

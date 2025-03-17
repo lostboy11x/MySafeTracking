@@ -1,4 +1,4 @@
-package com.example.mysafetracking.navigation
+package com.example.mysafetracking.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Animatable
@@ -27,7 +27,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(onTimeout: () -> Unit) {
     LaunchedEffect(Unit) {
-        delay(7000) // Espera 7 segons abans de navegar
+        delay(5000) // Espera 5 segons abans de navegar
         onTimeout()
     }
 

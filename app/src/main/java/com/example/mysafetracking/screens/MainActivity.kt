@@ -1,4 +1,4 @@
-package com.example.mysafetracking.navigation
+package com.example.mysafetracking.screens
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // 🔹 Launcher per gestionar la sol·licitud del permís de BACKGROUND.
+    // Launcher per gestionar la sol·licitud del permís de BACKGROUND.
     private val requestBackgroundPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
