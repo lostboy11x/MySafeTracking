@@ -94,7 +94,9 @@ fun LoginScreen(navController: NavHostController) {
         errorMessage = if (isValid) "" else "Omple correctament tots els camps"
         if (isValid) {
             // Aquí va la logica de verificar les credencials
-            navController.navigate("gifScreen") // Canviar "gifScreen" per la ruta correcta
+            navController.navigate("gifScreen") {   // Canviar "gifScreen" per la ruta correcta
+                popUpTo("loginForm") { inclusive = true }
+            }
         }
     }
 
@@ -184,8 +186,10 @@ fun LoginScreen(navController: NavHostController) {
                 // Botó de registrar-se
                 TextButton(
                     onClick = {
-                        navController.popBackStack()
-                        navController.navigate("register")
+                        //navController.popBackStack()
+                        navController.navigate("register") {
+                            popUpTo("loginForm") { inclusive = true }
+                        }
                     },
                     modifier = Modifier.padding(top = 16.dp)
                 ) {
@@ -215,7 +219,10 @@ fun RegisterScreen(navController: NavHostController) {
         if (isValid) {
             // Aquí va la lógica per a refistrar l'usuari
             // Després de registrar-se, navegar a la GifScreen
-            navController.navigate("gifScreen") // Canviar "gifScreen" per la ruta correcta
+            navController.navigate("gifScreen") {   // Canviar "gifScreen" per la ruta correcta
+                popUpTo("register") { inclusive = true }
+
+            }
         }
     }
 
@@ -236,7 +243,6 @@ fun RegisterScreen(navController: NavHostController) {
                             tint = Color.White
                         )
                     }
-
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = MaterialTheme.colorScheme.background),
             )
@@ -324,8 +330,10 @@ fun RegisterScreen(navController: NavHostController) {
                 // Botó de login
                 TextButton(
                     onClick = {
-                        navController.popBackStack()
-                        navController.navigate("loginForm")
+                        //navController.popBackStack()
+                        navController.navigate("loginForm") {
+                            popUpTo("register") { inclusive = true }
+                        }
                     },
                     modifier = Modifier.padding(top = 16.dp)
                 ) {
