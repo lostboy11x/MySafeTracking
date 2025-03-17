@@ -90,11 +90,10 @@ fun LoginScreen(navController: NavHostController) {
 
     // Validar sol quan l'usuari faci click al botó
     fun handleLogin() {
-        isValid = validateLogin(email, password)
-        errorMessage = if (isValid) "" else "Omple correctament tots els camps"
+        errorMessage = validateLogin(email, password)
+        isValid = errorMessage.isEmpty()
         if (isValid) {
-            // Aquí va la logica de verificar les credencials
-            navController.navigate("gifScreen") {   // Canviar "gifScreen" per la ruta correcta
+            navController.navigate("gifScreen") {
                 popUpTo("loginForm") { inclusive = true }
             }
         }
@@ -145,7 +144,10 @@ fun LoginScreen(navController: NavHostController) {
                 // Camp d'email
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = {
+                        email = it
+                        //errorMessage = validateLogin(email, password)
+                    },
                     label = { Text("Email") },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -155,7 +157,10 @@ fun LoginScreen(navController: NavHostController) {
                 // Camp de contrasenya
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = {
+                        password = it
+                        //errorMessage = validateLogin(email, password)
+                    },
                     label = { Text("Contrasenya") },
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier
@@ -167,7 +172,6 @@ fun LoginScreen(navController: NavHostController) {
                 if (errorMessage.isNotEmpty()) {
                     Text(text = errorMessage, color = Color.Red, fontSize = 14.sp)
                 }
-
 
                 // Botó d'iniciar sessió
                 Button(
