@@ -60,7 +60,7 @@ fun RegisterScreen(navController: NavHostController) {
         if (errorMessage.isEmpty()) {
             // Aquí va la lógica per a registrar l'usuari
             // Després de registrar-se, navegar a la GifScreen
-            navController.navigate("gifScreen") {
+            navController.navigate("menuTutor") {
                 popUpTo("register") { inclusive = true }
                 popUpTo("authorize") { inclusive = true }
             }

@@ -56,7 +56,12 @@ fun LoginScreen(navController: NavHostController) {
         errorMessage = validateLogin(email, password)
         isValid = errorMessage.isEmpty()
         if (isValid) {
+            /*
             navController.navigate("gifScreen") {
+                popUpTo("loginForm") { inclusive = true }
+                popUpTo("authorize") { inclusive = true }
+            }*/
+            navController.navigate("menuTutor") {
                 popUpTo("loginForm") { inclusive = true }
                 popUpTo("authorize") { inclusive = true }
             }

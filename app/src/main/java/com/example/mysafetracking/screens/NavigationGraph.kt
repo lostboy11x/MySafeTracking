@@ -26,7 +26,14 @@ fun NavigationGraph(navController: NavHostController) {
         composable("register") {
             RegisterScreen(navController = navController)
         }
-        composable("gifScreen") { GifDrip(navController = navController) }  // La pantalla de GIF
-
+        composable("menuTutor") {
+            MenuScreenTutor(navController = navController)
+        }
+        composable("mapScreen") {
+            MapScreen(navController = navController)
+        }
+        composable("gifScreen") {
+            GifDrip(navController = navController)  // La pantalla de GIF
+        }
     }
 }
