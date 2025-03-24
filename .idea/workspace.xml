@@ -9,19 +9,18 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33cc891b-e53b-4ddb-ab40-0a4615109f6b" name="Changes" comment="Implementació de MenuScreenTutor, amb mapa, llista de fills i localització. Implementació d'apikey segura, etc....-">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/ChildMenuScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/LoginAsChildScreen.kt" afterDir="false" />
+    <list default="true" id="33cc891b-e53b-4ddb-ab40-0a4615109f6b" name="Changes" comment="Implementació visual iniciar com a fill LoginAsChildScreen i ChildMenuScreen (falta crear tot, sol s'ha fet el fitxer kt).&#10;&#10;TODO: Crear una base de dades pare i fill on poguem verificar alhora d'afegir un codi que es d'un pare i iniciar com a fill, un cop dins el fill veure el menu com a un mapa amb la seva posició actual i les geofences de prohibició....&#10;&#10;Falta implementar geofences">
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/AuthorizeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/AuthorizeScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/NavigationGraph.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/NavigationGraph.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/UsersData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/UsersData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/ChildMenuScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/ChildMenuScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/LoginAsChildScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/LoginAsChildScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -252,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742729731026</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Implementació visual iniciar com a fill LoginAsChildScreen i ChildMenuScreen (falta crear tot, sol s'ha fet el fitxer kt).&#10;&#10;TODO: Crear una base de dades pare i fill on poguem verificar alhora d'afegir un codi que es d'un pare i iniciar com a fill, un cop dins el fill veure el menu com a un mapa amb la seva posició actual i les geofences de prohibició....&#10;&#10;Falta implementar geofences">
+      <option name="closed" value="true" />
+      <created>1742837839246</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1742837839246</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -273,7 +280,8 @@
     <MESSAGE value="Validació de register correcta" />
     <MESSAGE value="Validació registre i login, divisió de fitxers i pantalles i estils de outlinetext per demanar dades de registre i login (iconos, colors, etc...)" />
     <MESSAGE value="Implementació de MenuScreenTutor, amb mapa, llista de fills i localització. Implementació d'apikey segura, etc....-" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementació de MenuScreenTutor, amb mapa, llista de fills i localització. Implementació d'apikey segura, etc....-" />
+    <MESSAGE value="Implementació visual iniciar com a fill LoginAsChildScreen i ChildMenuScreen (falta crear tot, sol s'ha fet el fitxer kt).&#10;&#10;TODO: Crear una base de dades pare i fill on poguem verificar alhora d'afegir un codi que es d'un pare i iniciar com a fill, un cop dins el fill veure el menu com a un mapa amb la seva posició actual i les geofences de prohibició....&#10;&#10;Falta implementar geofences" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementació visual iniciar com a fill LoginAsChildScreen i ChildMenuScreen (falta crear tot, sol s'ha fet el fitxer kt).&#10;&#10;TODO: Crear una base de dades pare i fill on poguem verificar alhora d'afegir un codi que es d'un pare i iniciar com a fill, un cop dins el fill veure el menu com a un mapa amb la seva posició actual i les geofences de prohibició....&#10;&#10;Falta implementar geofences" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">

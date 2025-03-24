@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -25,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -132,6 +129,10 @@ fun LoginAsChildScreen(navController: NavHostController) {
                 // Botó d'iniciar sessió
                 Button(
                     onClick = {
+                        navController.navigate("menuChild") {
+                            popUpTo("logincChild") { inclusive = true }
+                            popUpTo("authorize") { inclusive = true }
+                        }
                         //handleLoginChild()
                     },
                     enabled = childCode.isNotBlank(), //Todo: Afegir verificació que el codi és del pare

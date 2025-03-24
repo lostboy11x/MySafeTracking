@@ -118,7 +118,7 @@ private val children = listOf(
         email = "marc@example.com",
         guardianId = "T1",
         currentLocation = Location(41.3851, 2.1734),
-        photoProfile = drawableImages.random()
+        photoProfile = drawableImages.random(),
     ),
     Child(
         id = "2",
