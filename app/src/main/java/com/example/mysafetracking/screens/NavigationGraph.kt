@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 @Composable
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "splash") {
+
+        //Inicialització
         composable("splash") {
             SplashScreen(onTimeout = {
                 navController.navigate("authorize") {
@@ -17,6 +19,8 @@ fun NavigationGraph(navController: NavHostController) {
                 }
             })
         }
+
+        // Autorització
         composable("authorize") {
             AuthorizeScreen(navController = navController)
         }
@@ -26,12 +30,24 @@ fun NavigationGraph(navController: NavHostController) {
         composable("register") {
             RegisterScreen(navController = navController)
         }
+
+        // Tutor
         composable("menuTutor") {
             MenuScreenTutor(navController = navController)
         }
         composable("mapScreen") {
             MapScreen(navController = navController)
         }
+
+        // Child
+        composable("logincChild") {
+            LoginAsChildScreen(navController = navController)
+        }
+        composable("menuChild") {
+            ChildMenuScreen(navController = navController)
+        }
+
+        // Extra
         composable("gifScreen") {
             GifDrip(navController = navController)  // La pantalla de GIF
         }

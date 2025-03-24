@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +56,19 @@ fun AuthorizeScreen(navController: NavHostController) {
                     .padding(horizontal = 16.dp)
             ) {
                 Text(text = "Crear un Compte", fontSize = 18.sp)
+            }
+
+            // Botó Iniciar com a fill
+            TextButton(
+                onClick = {
+                    //navController.popBackStack()
+                    navController.navigate("logincChild")
+                },
+                modifier = Modifier
+                    .heightIn(min = 48.dp, max = 56.dp)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(text = "Sóc un fill", fontSize = 18.sp)
             }
         }
     }
