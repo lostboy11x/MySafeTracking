@@ -38,6 +38,11 @@ fun NavigationGraph(navController: NavHostController) {
         composable("mapScreen") {
             MapScreen(navController = navController)
         }
+        composable("childInformationScreen/{lat}/{lng}") { backStackEntry ->
+            val lat = backStackEntry.arguments?.getString("lat")?.toDoubleOrNull()
+            val lng = backStackEntry.arguments?.getString("lng")?.toDoubleOrNull()
+            ChildInformationScreen(navController, lat, lng)
+        }
 
         // Child
         composable("logincChild") {

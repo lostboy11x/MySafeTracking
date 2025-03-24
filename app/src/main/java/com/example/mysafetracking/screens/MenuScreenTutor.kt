@@ -22,8 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
 import com.example.mysafetracking.data.Child
-import com.example.mysafetracking.data.Location
-import com.example.mysafetracking.data.drawableImages
 import com.example.mysafetracking.data.getChildren
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,7 +85,7 @@ fun ChildItem(child: Child, navController: NavHostController) {
             .padding(vertical = 4.dp)
             .clickable {
             /* Aquí podries afegir una acció, com veure més detalls */
-                navController.navigate("gifScreen") {
+                navController.navigate("childInformationScreen/${child.currentLocation?.latitude}/${child.currentLocation?.longitude}") {
                     popUpTo("menuTutor") { inclusive = true }
                 }
             },
