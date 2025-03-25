@@ -85,9 +85,7 @@ fun ChildItem(child: Child, navController: NavHostController) {
             .padding(vertical = 4.dp)
             .clickable {
             /* Aquí podries afegir una acció, com veure més detalls */
-                navController.navigate("childInformationScreen/${child.currentLocation?.latitude}/${child.currentLocation?.longitude}") {
-                    popUpTo("menuTutor") { inclusive = true }
-                }
+                navController.navigate("childInformationScreen/${child.currentLocation?.latitude}/${child.currentLocation?.longitude}")
             },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD)) // Blau clar suau
