@@ -78,6 +78,7 @@ dependencies {
     // Para Coil 2.x
     implementation(libs.coil.kt.coil)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
     // Google Maps
     implementation(libs.maps.compose)
