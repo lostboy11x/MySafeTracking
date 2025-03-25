@@ -5,11 +5,11 @@ import java.time.LocalDateTime
 
 // Classe base per a tots els usuaris
 open class User(
-    var id: String = "",
-    var name: String = "",
-    var surname: String = "",
-    var email: String = "",
-    var photoProfile: String = ""
+    open var id: String = "",
+    open var name: String = "",
+    open var surname: String = "",
+    open var email: String = "",
+    open var photoProfile: String = ""
 )
 
 // Classe per al Tutor
@@ -34,6 +34,26 @@ data class Tutor(
 }
 
 // Classe per al Tutorat (nen)
+data class Child(
+    override var id: String = "",
+    override var name: String = "",
+    override var surname: String = "",
+    override var email: String = "",
+    override var photoProfile: String = "",
+    var guardianId: String = "",
+    var currentLocation: Location? = null,
+    var childCode: String = generateRandomCode()
+) : User(id, name, surname, email, photoProfile){
+    companion object {
+        fun generateRandomCode(length: Int = 12): String {
+            val charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+            return (1..length)
+                .map { charset.random() }
+                .joinToString("")
+        }
+    }
+}
+/*
 data class Child(
     var guardianId: String = "",
     var currentLocation: Location? = null, // Ubicació actual
@@ -64,7 +84,7 @@ data class Child(
                 .joinToString("")
         }
     }
-}
+}*/
 
 // Classe per emmagatzemar la ubicació amb el timestamp
 data class Location(
@@ -168,6 +188,19 @@ private val children = listOf(
 )
 
 @Composable
+fun getChildrenCompose(): List<Child> {
+    return children
+}
+
 fun getChildren(): List<Child> {
     return children
 }
+
+val tutor = Tutor(
+    id = "T1",
+    name = "Anna",
+    surname = "Pérez",
+    email = "anna@example.com",
+    photoProfile = drawableImages.random(),
+    children = getChildren().filter { it.guardianId == "T1" }.map { it.id }
+)

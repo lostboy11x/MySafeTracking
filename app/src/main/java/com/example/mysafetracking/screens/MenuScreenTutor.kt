@@ -1,5 +1,6 @@
 package com.example.mysafetracking.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -28,11 +28,19 @@ import com.example.mysafetracking.R
 import com.example.mysafetracking.data.Child
 import com.example.mysafetracking.data.getChildren
 
+@SuppressLint("MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreenTutor(navController: NavHostController) {
-    var children = getChildren()
+    var children by remember { mutableStateOf(getChildren().toMutableList()) }
     var isEditing by remember { mutableStateOf(false) }
+
+    fun onSaveChild(updatedChild: Child) {
+        // Actualitzem la llista de nens amb el nen editat
+        children = children.map {
+            if (it.id == updatedChild.id) updatedChild else it
+        }.toMutableList()
+    }
 
     Scaffold(
         topBar = {
@@ -74,6 +82,7 @@ fun MenuScreenTutor(navController: NavHostController) {
                         onRemove = { childToRemove ->
                             children = children.filter { it.id != childToRemove.id }.toMutableList()
                         },
+                        onSave = { updatedChild -> onSaveChild(updatedChild) },
                         navController = navController
                     )
                 }
@@ -87,17 +96,24 @@ fun ChildItemEditable(
     child: Child,
     isEditing: Boolean,
     onRemove: (Child) -> Unit,
+    onSave: (Child) -> Unit,
     navController: NavHostController
 ) {
     val imageResource = getImageResource(child.photoProfile)
+    var showEditDialog by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable {
-                /* Aquí podries afegir una acció, com veure més detalls */
-                navController.navigate("childInformationScreen/${child.currentLocation?.latitude}/${child.currentLocation?.longitude}")
+                if (!isEditing) {
+                    navController.navigate("childInformationScreen/${child.currentLocation?.latitude}/${child.currentLocation?.longitude}")
+                } else {
+                    //Pop UP editar
+                    showEditDialog = true
+                }
+
             },
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD)) // Blau clar suau
@@ -145,6 +161,71 @@ fun ChildItemEditable(
             }
         }
     }
+
+    if (showEditDialog) {
+        EditChildDialog(
+            child = child,
+            onDismiss = { showEditDialog = false },
+            onSave = {
+                onSave(it)
+                showEditDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+fun EditChildDialog(child: Child, onDismiss: () -> Unit, onSave: (Child) -> Unit) {
+    var name by remember { mutableStateOf(child.name) }
+    var surname by remember { mutableStateOf(child.surname) }
+    var childCode by remember { mutableStateOf(child.childCode) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Editar Nen") },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Nom") },
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = surname,
+                    onValueChange = { surname = it },
+                    label = { Text("Cognoms") },
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = childCode,
+                    onValueChange = { childCode = it },
+                    label = { Text("Codi de nen") },
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = {
+                onSave(child.copy(
+                    name = name,
+                    surname = surname,
+                    email = child.email, // Mantenim el mateix email
+                    photoProfile = child.photoProfile, // Mantenim la mateixa foto
+                    guardianId = child.guardianId,
+                    currentLocation = child.currentLocation, // Deixem la mateixa ubicació
+                    childCode = childCode
+                ))
+            }) {
+                Text("Desar")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel·lar")
+            }
+        }
+    )
 }
 
 // Funció per obtenir la imatge del recurs drawable en base al nom

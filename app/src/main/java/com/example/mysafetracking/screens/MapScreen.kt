@@ -41,14 +41,14 @@ import com.google.android.gms.maps.model.*
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.delay
 import androidx.core.graphics.scale
-import com.example.mysafetracking.data.getChildren
+import com.example.mysafetracking.data.getChildrenCompose
 import com.google.android.gms.maps.CameraUpdateFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("MissingPermission")
 @Composable
 fun MapScreen(navController: NavHostController) {
-    val children: List<Child> = getChildren()
+    val children: List<Child> = getChildrenCompose()
     val context = LocalContext.current
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     var userLocation by remember { mutableStateOf<LatLng?>(null) }
