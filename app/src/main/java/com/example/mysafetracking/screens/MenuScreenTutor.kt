@@ -149,7 +149,7 @@ fun ChildItemEditable(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "${child.name} ${child.surname} (${child.childCode})",
+                    text = "${child.name} ${child.surname}",
                     fontWeight = FontWeight.Bold
                 )
                 child.currentLocation?.let {
