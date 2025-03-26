@@ -11,6 +11,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -48,13 +52,64 @@ fun MenuScreenTutor(navController: NavHostController) {
                 title = {
                     Text(text = stringResource(R.string.app_name), color = Color.White)
                 },
-                actions = {
-                    TextButton(onClick = { isEditing = !isEditing }) {
-                        Text(if (isEditing) "Fet" else "Edita", color = Color.White)
-                    }
-                },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
             )
+            /*
+            .padding(bottom = 48.dp)
+                    .padding(top = 18.dp)
+             */
+        },
+        bottomBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 54.dp)
+                    .padding(top = 22.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                ExtendedFloatingActionButton(
+                    onClick = { navController.navigate("mapScreen") },
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = Color.White,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Place, contentDescription = "Veure el mapa")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Mapa")
+                }
+
+                ExtendedFloatingActionButton(
+                    onClick = { isEditing = !isEditing },
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = Color.White,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isEditing) Icons.Default.Check else Icons.Default.Edit,
+                        contentDescription = "Editar"
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(if (isEditing) "Fet" else "Editar")
+                }
+
+                ExtendedFloatingActionButton(
+                    onClick = { navController.navigate("addChildScreen") },
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = Color.White,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 4.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Afegir Fill/a")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Afegir")
+                }
+            }
         }
     ) { paddingValues ->
         Column(
@@ -64,15 +119,6 @@ fun MenuScreenTutor(navController: NavHostController) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Botó per veure el mapa
-            Button(
-                onClick = { navController.navigate("mapScreen") { popUpTo("menuTutor") } },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text("Veure el mapa", fontWeight = FontWeight.Bold)
-            }
-
             // Llista de nens amb mode d'edició
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(children, key = { it.id }) { child ->
@@ -152,12 +198,6 @@ fun ChildItemEditable(
                     text = "${child.name} ${child.surname}",
                     fontWeight = FontWeight.Bold
                 )
-                child.currentLocation?.let {
-                    Text(
-                        text = "Ubicació: Lat ${it.latitude}, Lng ${it.longitude}",
-                        color = Color.Gray
-                    )
-                } ?: Text(text = "Ubicació no disponible", color = Color.Gray)
             }
         }
     }
@@ -207,15 +247,17 @@ fun EditChildDialog(child: Child, onDismiss: () -> Unit, onSave: (Child) -> Unit
         },
         confirmButton = {
             Button(onClick = {
-                onSave(child.copy(
-                    name = name,
-                    surname = surname,
-                    email = child.email, // Mantenim el mateix email
-                    photoProfile = child.photoProfile, // Mantenim la mateixa foto
-                    guardianId = child.guardianId,
-                    currentLocation = child.currentLocation, // Deixem la mateixa ubicació
-                    childCode = childCode
-                ))
+                onSave(
+                    child.copy(
+                        name = name,
+                        surname = surname,
+                        email = child.email, // Mantenim el mateix email
+                        photoProfile = child.photoProfile, // Mantenim la mateixa foto
+                        guardianId = child.guardianId,
+                        currentLocation = child.currentLocation, // Deixem la mateixa ubicació
+                        childCode = childCode
+                    )
+                )
             }) {
                 Text("Desar")
             }

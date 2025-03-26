@@ -102,17 +102,14 @@ fun MapScreen(navController: NavHostController) {
                     .fillMaxWidth()
                     .weight(1f) // Ocupa el màxim d'espai disponible
                     .padding(16.dp) // Padding al voltant del mapa
-                    .background(
-                        Color(0xFFF1F1F1), // Color de fons lleuger per al mapa
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    .background(Color(0xFFF1F1F1))
+                    .clip(RoundedCornerShape(12.dp)),
             ) {
                 GoogleMap(
                     modifier = Modifier.fillMaxSize(),
                     properties = MapProperties(isMyLocationEnabled = true),
                     uiSettings = MapUiSettings(zoomControlsEnabled = false),
-                    cameraPositionState = cameraPositionState
-
+                    cameraPositionState = cameraPositionState,
                 ) {
                     // Marker de la ubicació de l'usuari
                     userLocation?.let {

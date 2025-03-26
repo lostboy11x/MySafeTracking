@@ -182,6 +182,33 @@ private val children = listOf(
         surname = "Lloret",
         email = "marta@example.com",
         guardianId = "T1",
+        currentLocation = Location(43.357778, 2.458611),
+        photoProfile = drawableImages.random()
+    ),
+    Child(
+        id = "7",
+        name = "Miquel",
+        surname = "Adria",
+        email = "miquel@example.com",
+        guardianId = "T1",
+        currentLocation = Location(44.3543132, 0.458611),
+        photoProfile = drawableImages.random()
+    ),
+    Child(
+        id = "8",
+        name = "Raul",
+        surname = "Aitor",
+        email = "raul@example.com",
+        guardianId = "T1",
+        currentLocation = Location(42.542311, 1.54211),
+        photoProfile = drawableImages.random()
+    ),
+    Child(
+        id = "9",
+        name = "Maria",
+        surname = "Aitona",
+        email = "maria@example.com",
+        guardianId = "T1",
         currentLocation = Location(42.357778, 1.458611),
         photoProfile = drawableImages.random()
     )
