@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     //id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.devtools.ksp") version "2.1.10-1.0.31"
+
 }
 
 val localProperties = Properties().apply {
@@ -87,4 +89,14 @@ dependencies {
     // Pack Icones
     implementation(libs.material.icons.extended)
 
+    //Room
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:2.5.0")
+    annotationProcessor("androidx.room:room-compiler:$room_version") // If still using annotationProcessor
+    ksp("androidx.room:room-compiler:$room_version") // For KSP
+    ksp("androidx.room:room-ktx:$room_version")
+
+    // Gson
+    implementation("com.google.code.gson:gson:2.11.0")
 }
