@@ -102,7 +102,10 @@ fun MapScreen(navController: NavHostController) {
                     .fillMaxWidth()
                     .weight(1f) // Ocupa el màxim d'espai disponible
                     .padding(16.dp) // Padding al voltant del mapa
-                    .background(Color(0xFFF1F1F1))
+                    .background(
+                        Color(0xFFF1F1F1), // Color de fons lleuger per al mapa
+                        shape = RoundedCornerShape(12.dp)
+                    )
                     .clip(RoundedCornerShape(12.dp)),
             ) {
                 GoogleMap(
