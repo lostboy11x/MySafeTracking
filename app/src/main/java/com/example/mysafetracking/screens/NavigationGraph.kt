@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.mysafetracking.data.db.viewmodels.ChildViewModel
+import com.example.mysafetracking.data.db.viewmodels.TutorViewModel
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(navController: NavHostController, tutorViewModel: TutorViewModel, childViewModel: ChildViewModel) {
     NavHost(navController = navController, startDestination = "splash") {
 
         //Inicialització
@@ -25,15 +27,15 @@ fun NavigationGraph(navController: NavHostController) {
             AuthorizeScreen(navController = navController)
         }
         composable("loginForm") {
-            LoginScreen(navController = navController)
+            LoginScreen(navController = navController, tutorViewModel = tutorViewModel)
         }
         composable("register") {
-            RegisterScreen(navController = navController)
+            RegisterScreen(navController = navController, tutorViewModel = tutorViewModel)
         }
 
         // Tutor
         composable("menuTutor") {
-            MenuScreenTutor(navController = navController)
+            MenuScreenTutor(navController = navController, tutorViewModel = tutorViewModel, childViewModel = childViewModel)
         }
         composable("mapScreen") {
             MapScreen(navController = navController)

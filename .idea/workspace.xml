@@ -9,25 +9,28 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33cc891b-e53b-4ddb-ab40-0a4615109f6b" name="Changes" comment="Implementació popup + edició de fills">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/dao/Dao.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/database/Database.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/entities/Entities.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/repository/Repository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/checksums/sha1-checksums.bin" afterDir="false" />
+    <list default="true" id="33cc891b-e53b-4ddb-ab40-0a4615109f6b" name="Changes" comment="Room implementat">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/viewmodels/ChildViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/viewmodels/TutorViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/viewmodels/ViewModelFactory.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/UsersData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/UsersData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/dao/Dao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/dao/Dao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/database/Database.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/database/Database.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/entities/Entities.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/entities/Entities.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/repository/Repository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/data/db/repository/Repository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/LoginScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/LoginScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/MenuScreenTutor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/MenuScreenTutor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/NavigationGraph.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/NavigationGraph.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/RegisterScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/mysafetracking/screens/RegisterScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
@@ -49,8 +52,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="valueResourceFile" />
-        <option value="Kotlin Class" />
         <option value="Class" />
+        <option value="Kotlin Class" />
         <option value="Kotlin File" />
       </list>
     </option>
@@ -84,32 +87,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Android App.app.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "com.google.services.firebase.aqiPopupShown": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/marcg/OneDrive/Documents/Programacio/Kotlin/Practica_PlataformesEnXarxa/app/src/main/res",
-    "project.structure.last.edited": "SDK Location",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.language.Kotlin"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Android App.app.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/marcg/OneDrive/Documents/Programacio/Kotlin/Practica_PlataformesEnXarxa/app/src/main/res&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDK Location&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.language.Kotlin&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Properties",
-      "AIDL"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Properties&quot;,
+      &quot;AIDL&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\marcg\OneDrive\Documents\Programacio\Kotlin\Practica_PlataformesEnXarxa\app\src\main\res" />
@@ -284,7 +287,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742933644247</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Room implementat">
+      <option name="closed" value="true" />
+      <created>1743016785547</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1743016785548</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -308,7 +319,8 @@
     <MESSAGE value="Implementació visual iniciar com a fill LoginAsChildScreen i ChildMenuScreen (falta crear tot, sol s'ha fet el fitxer kt).&#10;&#10;TODO: Crear una base de dades pare i fill on poguem verificar alhora d'afegir un codi que es d'un pare i iniciar com a fill, un cop dins el fill veure el menu com a un mapa amb la seva posició actual i les geofences de prohibició....&#10;&#10;Falta implementar geofences" />
     <MESSAGE value="Classe ChildInformationScreen creada, on s'ha fet el mapa per indicar la ubicació del fill individual des de l'aplicació del Tutor" />
     <MESSAGE value="Implementació popup + edició de fills" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementació popup + edició de fills" />
+    <MESSAGE value="Room implementat" />
+    <option name="LAST_COMMIT_MESSAGE" value="Room implementat" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">

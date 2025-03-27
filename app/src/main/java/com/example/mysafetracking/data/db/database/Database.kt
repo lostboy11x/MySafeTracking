@@ -13,7 +13,7 @@ import com.example.mysafetracking.data.db.entities.Converters
 import com.example.mysafetracking.data.db.entities.LocationEntity
 import com.example.mysafetracking.data.db.entities.TutorEntity
 
-@Database(entities = [ChildEntity::class, LocationEntity::class, TutorEntity::class], version = 1)
+@Database(entities = [TutorEntity::class, ChildEntity::class, LocationEntity::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun childDao(): ChildDao

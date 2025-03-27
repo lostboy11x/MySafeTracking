@@ -1,6 +1,7 @@
 package com.example.mysafetracking.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,21 +32,68 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
 import com.example.mysafetracking.data.Child
+import com.example.mysafetracking.data.db.entities.toEntity
+import com.example.mysafetracking.data.db.viewmodels.ChildViewModel
+import com.example.mysafetracking.data.db.viewmodels.TutorViewModel
 import com.example.mysafetracking.data.getChildren
 
 @SuppressLint("MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreenTutor(navController: NavHostController) {
-    var children by remember { mutableStateOf(getChildren().toMutableList()) }
+fun MenuScreenTutor(navController: NavHostController, tutorViewModel: TutorViewModel, childViewModel: ChildViewModel) {
+    val tutor by tutorViewModel.tutor.observeAsState()
+    //var children by remember { mutableStateOf(getChildren().toMutableList()) }
+    val childrenState by childViewModel.children.observeAsState(initial = emptyList())
+    var children by remember { mutableStateOf(childrenState) }
     var isEditing by remember { mutableStateOf(false) }
+
+    if (childViewModel.getTutorId() != "") {
+        tutor?.let { childViewModel.setTutorIde(it.id) }
+    }
+
+    // Obtenir els fills associats al tutor quan el tutor es carrega
+    LaunchedEffect(tutor) {
+        tutor?.let {
+            childViewModel.loadChildren(it.id) // Carreguem els nens del tutor
+        }
+    }
 
     fun onSaveChild(updatedChild: Child) {
         // Actualitzem la llista de nens amb el nen editat
         children = children.map {
             if (it.id == updatedChild.id) updatedChild else it
         }.toMutableList()
+
+        childViewModel.updateChild(updatedChild)
+        Log.d("MenuScreenTutor", "Child updated: $updatedChild")
     }
+
+    // Variables per al Popup
+    var isDialogOpen by remember { mutableStateOf(false) }
+    var childName by remember { mutableStateOf("") }
+    var childSurname by remember { mutableStateOf("") }
+    var childEmail by remember { mutableStateOf("") }
+    var childPhotoProfile by remember { mutableStateOf("") }
+
+    // Funció per afegir el fill i guardar-lo a la base de dades
+    fun addChildToDatabase() {
+        val newChild = tutor?.let {
+            Child(
+                name = childName,
+                surname = childSurname,
+                email = childEmail,
+                photoProfile = childPhotoProfile,
+                guardianId = it.id,
+                childCode = Child.generateRandomCode()
+            )
+        }
+
+        if (newChild != null) {
+            childViewModel.insertChild(newChild.toEntity())
+        }
+        isDialogOpen = false
+    }
+
 
     Scaffold(
         topBar = {
@@ -54,10 +103,6 @@ fun MenuScreenTutor(navController: NavHostController) {
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
             )
-            /*
-            .padding(bottom = 48.dp)
-                    .padding(top = 18.dp)
-             */
         },
         bottomBar = {
             Row(
@@ -97,8 +142,9 @@ fun MenuScreenTutor(navController: NavHostController) {
                     Text(if (isEditing) "Fet" else "Editar")
                 }
 
+                // Afegim el fills
                 ExtendedFloatingActionButton(
-                    onClick = { navController.navigate("addChildScreen") },
+                    onClick = { isDialogOpen = true }, // Mostrem el popup per afegir un fill
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = Color.White,
                     modifier = Modifier
@@ -126,7 +172,10 @@ fun MenuScreenTutor(navController: NavHostController) {
                         child = child,
                         isEditing = isEditing,
                         onRemove = { childToRemove ->
-                            children = children.filter { it.id != childToRemove.id }.toMutableList()
+                            // Actualitzem la llista de nens després de la remoció
+                            children =
+                                children.filter { it.id != childToRemove.id }.toMutableList()
+                            childViewModel.removeChild(childToRemove)
                         },
                         onSave = { updatedChild -> onSaveChild(updatedChild) },
                         navController = navController
@@ -134,6 +183,54 @@ fun MenuScreenTutor(navController: NavHostController) {
                 }
             }
         }
+    }
+
+    // Popup per afegir un fill
+    if (isDialogOpen) {
+        AlertDialog(
+            onDismissRequest = { isDialogOpen = false },
+            title = { Text("Afegir Fill") },
+            text = {
+                Column {
+                    TextField(
+                        value = childName,
+                        onValueChange = { childName = it },
+                        label = { Text("Nom") }
+                    )
+                    TextField(
+                        value = childSurname,
+                        onValueChange = { childSurname = it },
+                        label = { Text("Cognom") }
+                    )
+                    TextField(
+                        value = childEmail,
+                        onValueChange = { childEmail = it },
+                        label = { Text("Correu electrònic") }
+                    )
+                    TextField(
+                        value = childPhotoProfile,
+                        onValueChange = { childPhotoProfile = it },
+                        label = { Text("Foto de perfil") }
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        addChildToDatabase() // Afegim el fill i el guardem a la base de dades
+                    }
+                ) {
+                    Text("Guardar")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { isDialogOpen = false }
+                ) {
+                    Text("Cancel·lar")
+                }
+            }
+        )
     }
 }
 

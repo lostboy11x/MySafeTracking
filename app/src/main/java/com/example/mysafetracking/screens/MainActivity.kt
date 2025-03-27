@@ -9,8 +9,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
+import com.example.mysafetracking.data.db.database.AppDatabase
+import com.example.mysafetracking.data.db.repository.ChildRepository
+import com.example.mysafetracking.data.db.repository.TutorRepository
+import com.example.mysafetracking.data.db.viewmodels.ChildViewModel
+import com.example.mysafetracking.data.db.viewmodels.TutorViewModel
 import com.example.mysafetracking.ui.theme.MySafeTrackingTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +27,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             MySafeTrackingTheme {
                 val navController = rememberNavController()
-                NavigationGraph(navController)
+
+                // Inicialitzem la base de dades i el repositori
+                val context = LocalContext.current
+                val database = remember { AppDatabase.getDatabase(context) }
+                val tutorRepository = remember { TutorRepository(database.tutorDao(),database.childDao()) }
+                val tutorViewModel = remember { TutorViewModel(tutorRepository) }
+                val childRepository = ChildRepository(database.childDao())
+                val childViewModel = remember { ChildViewModel(childRepository, database) }
+
+                NavigationGraph(navController = navController, tutorViewModel = tutorViewModel, childViewModel = childViewModel)
             }
         }
 

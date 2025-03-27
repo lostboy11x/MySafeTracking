@@ -6,6 +6,9 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import androidx.room.TypeConverter
+import androidx.room.TypeConverters
+import com.example.mysafetracking.data.Child
+import com.example.mysafetracking.data.Location
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import java.time.LocalDateTime
@@ -18,8 +21,10 @@ data class TutorEntity(
     var name: String = "",      // mutable
     var surname: String = "",   // mutable
     var email: String = "",     // mutable
+    val password: String = "",
     var photoProfile: String = "", // mutable
-    var children: List<String> = emptyList() // mutable
+    @TypeConverters(Converters::class)
+    var children: List<ChildEntity> = emptyList() // mutable
 )
 
 @Entity
@@ -32,6 +37,17 @@ data class ChildEntity(
     var guardianId: String = "", // mutable
     var childCode: String = "" // mutable
 )
+fun Child.toEntity(): ChildEntity {
+    return ChildEntity(
+        id = this.id,
+        name = this.name,
+        surname = this.surname,
+        email = this.email,
+        photoProfile = this.photoProfile,
+        guardianId = this.guardianId,
+        childCode = this.childCode
+    )
+}
 
 data class ChildWithLocations(
     @Embedded val child: ChildEntity,  // El nen
@@ -62,6 +78,7 @@ data class LocationEntity(
 )
 
 class Converters {
+    private val gson = Gson()
     @TypeConverter
     fun fromLocalDateTime(value: String?): LocalDateTime? {
         return value?.let { LocalDateTime.parse(it, DateTimeFormatter.ISO_DATE_TIME) }
@@ -82,6 +99,35 @@ class Converters {
     fun fromStringToList(value: String?): List<String> {
         val gson = Gson()
         return gson.fromJson(value, Array<String>::class.java).toList() // Convierte el JSON a un Array y luego a List
+    }
+
+    @TypeConverter
+    fun fromListToJson(value: List<ChildEntity>?): String? {
+        // Converteix la llista de ChildEntity a JSON
+        return gson.toJson(value)
+    }
+
+    @TypeConverter
+    fun fromJsonToList(value: String?): List<ChildEntity>? {
+        // Converteix el JSON a una llista de ChildEntity
+        val type = object : TypeToken<List<ChildEntity>>() {}.type
+        return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
+    fun fromLocation(location: Location?): String? {
+        return location?.let { "${it.latitude},${it.longitude}" }
+    }
+
+    @TypeConverter
+    fun toLocation(data: String?): Location? {
+        return data?.split(",")?.let {
+            Location(
+                latitude = it[0].toDouble(),
+                longitude = it[1].toDouble(),
+                timestamp = it[2]
+            )
+        }
     }
 
 }

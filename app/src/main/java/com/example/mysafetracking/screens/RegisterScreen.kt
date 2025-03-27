@@ -41,12 +41,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
+import com.example.mysafetracking.data.db.entities.TutorEntity
+import com.example.mysafetracking.data.db.viewmodels.TutorViewModel
 import com.example.mysafetracking.logic.validateRegister
+import java.util.UUID
 
 // Register
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(navController: NavHostController) {
+fun RegisterScreen(navController: NavHostController, tutorViewModel: TutorViewModel) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -58,8 +61,20 @@ fun RegisterScreen(navController: NavHostController) {
     fun handleRegister() {
         errorMessage = validateRegister(firstName, lastName, email, password)
         if (errorMessage.isEmpty()) {
-            // Aquí va la lógica per a registrar l'usuari
-            // Després de registrar-se, navegar a la GifScreen
+            // Generar un ID únic per al tutor
+            val tutorId = UUID.randomUUID().toString()
+
+            // Crear una instància de TutorEntity amb un ID únic
+            val tutor = TutorEntity(
+                id = tutorId,  // Generar un ID únic
+                name = firstName,
+                surname = lastName,
+                email = email,
+                password = password
+            )
+
+            // Afegir el tutor a la base de dades
+            tutorViewModel.insertTutor(tutor)
             navController.navigate("menuTutor") {
                 popUpTo("register") { inclusive = true }
                 popUpTo("authorize") { inclusive = true }

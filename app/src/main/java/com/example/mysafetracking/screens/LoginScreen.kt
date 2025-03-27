@@ -39,31 +39,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
+import com.example.mysafetracking.data.db.viewmodels.TutorViewModel
 import com.example.mysafetracking.logic.validateLogin
 
 // Login
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController, tutorViewModel: TutorViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isValid by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
+
     // Validar sol quan l'usuari faci click al botó
     fun handleLogin() {
+        // Primer validem que el correu i la contrasenya no siguin buits
         errorMessage = validateLogin(email, password)
         isValid = errorMessage.isEmpty()
+
         if (isValid) {
-            /*
-            navController.navigate("gifScreen") {
-                popUpTo("loginForm") { inclusive = true }
-                popUpTo("authorize") { inclusive = true }
-            }*/
-            navController.navigate("menuTutor") {
-                popUpTo("loginForm") { inclusive = true }
-                popUpTo("authorize") { inclusive = true }
+            // Comprovar les credencials a la base de dades Room
+            tutorViewModel.getTutor(email) { tutor ->
+                if (tutor != null && tutor.password == password) { // Comprova que la contrasenya sigui correcta
+                    isValid = true
+                    errorMessage = ""
+
+                    // Passar l'objecte tutor a la següent pantalla
+                    navController.navigate("menuTutor") {
+                        popUpTo("loginForm") { inclusive = true }
+                        popUpTo("authorize") { inclusive = true }
+                    }
+                } else {
+                    isValid = false
+                    errorMessage = "Usuari o contrasenya incorrectes"
+                }
             }
         }
     }

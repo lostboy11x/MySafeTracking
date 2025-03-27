@@ -14,7 +14,7 @@ open class User(
 
 // Classe per al Tutor
 data class Tutor(
-    var children: List<String> = emptyList() // Llista d'IDs dels seus fills
+    var children: List<Child> = emptyList() // Llista d'IDs dels seus fills
 ) : User() {
     // Constructor del tutor que crida el constructor de User
     constructor(
@@ -23,7 +23,7 @@ data class Tutor(
         surname: String,
         email: String,
         photoProfile: String,
-        children: List<String>
+        children: List<Child>
     ) : this(children) {
         this.id = id
         this.name = name
@@ -53,43 +53,11 @@ data class Child(
         }
     }
 }
-/*
-data class Child(
-    var guardianId: String = "",
-    var currentLocation: Location? = null, // Ubicació actual
-    var childCode: String = generateRandomCode()
-) : User() {
-    // Constructor del nen que crida el constructor de User
-    constructor(
-        id: String,
-        name: String,
-        surname: String,
-        email: String,
-        guardianId: String,
-        currentLocation: Location? = null,
-        photoProfile: String
-    ) : this(guardianId, currentLocation) {
-        this.id = id
-        this.name = name
-        this.surname = surname
-        this.email = email
-        this.photoProfile = photoProfile
-    }
-
-    companion object {
-        fun generateRandomCode(length: Int = 12): String {
-            val charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-            return (1..length)
-                .map { charset.random() }
-                .joinToString("")
-        }
-    }
-}*/
 
 // Classe per emmagatzemar la ubicació amb el timestamp
 data class Location(
-    val latitude: Double = 0.0,
-    val longitude: Double = 0.0,
+    var latitude: Double = 0.0,
+    var longitude: Double = 0.0,
     val timestamp: String = LocalDateTime.now().toString() // Guarda data i hora actual
 )
 
@@ -222,12 +190,3 @@ fun getChildrenCompose(): List<Child> {
 fun getChildren(): List<Child> {
     return children
 }
-
-val tutor = Tutor(
-    id = "T1",
-    name = "Anna",
-    surname = "Pérez",
-    email = "anna@example.com",
-    photoProfile = drawableImages.random(),
-    children = getChildren().filter { it.guardianId == "T1" }.map { it.id }
-)
