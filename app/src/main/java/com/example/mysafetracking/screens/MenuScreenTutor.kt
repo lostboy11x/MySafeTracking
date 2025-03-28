@@ -1,7 +1,6 @@
 package com.example.mysafetracking.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
 import com.example.mysafetracking.data.Child
-import com.example.mysafetracking.data.drawableImages
 import com.example.mysafetracking.data.generateRandomLocation
 import com.example.mysafetracking.data.getChildren
+import com.example.mysafetracking.data.getRandonImage
 import com.example.mysafetracking.data.removeChild
 import com.example.mysafetracking.data.tutorData
 
@@ -41,10 +40,11 @@ import com.example.mysafetracking.data.tutorData
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreenTutor(navController: NavHostController) {
-    //var children by remember { mutableStateOf(getChildren().toMutableList()) }
     var children by remember { mutableStateOf(getChildren().toMutableList()) }
     var isEditing by remember { mutableStateOf(false) }
     val tutor = tutorData
+    // Variables per al Popup
+    var isDialogOpen by remember { mutableStateOf(false) }
 
     fun onSaveChild(updatedChild: Child) {
         // Actualitzem la llista de nens amb el nen editat
@@ -61,16 +61,10 @@ fun MenuScreenTutor(navController: NavHostController) {
             email = email,
             guardianId = tutorId,
             currentLocation = generateRandomLocation(),
-            photoProfile = drawableImages.random()
+            photoProfile = getRandonImage()
         )
         children = (children + newChild).toMutableList() // Afegim el nou fill a la llista
     }
-
-    // Variables per al Popup
-    var isDialogOpen by remember { mutableStateOf(false) }
-    var childName by remember { mutableStateOf("") }
-    var childSurname by remember { mutableStateOf("") }
-    var childEmail by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -161,52 +155,14 @@ fun MenuScreenTutor(navController: NavHostController) {
         }
     }
 
-    // Popup per afegir un fill
+    // Afegir un fill
     if (isDialogOpen) {
-        AlertDialog(
-            onDismissRequest = { isDialogOpen = false },
-            title = { Text("Afegir Fill") },
-            text = {
-                Column {
-                    TextField(
-                        value = childName,
-                        onValueChange = { childName = it },
-                        label = { Text("Nom") }
-                    )
-                    TextField(
-                        value = childSurname,
-                        onValueChange = { childSurname = it },
-                        label = { Text("Cognom") }
-                    )
-                    TextField(
-                        value = childEmail,
-                        onValueChange = { childEmail = it },
-                        label = { Text("Correu electrònic") }
-                    )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        Log.d("Tutor", tutor.toString())
-                        Log.d("Children size 1", children.size.toString())
-                        addChildToList(tutor.id, childName, childSurname, childEmail)
-                        //addChild(tutor.id, childName, childSurname, childEmail)
-                        //children = getChildren().toMutableList()
-                        Log.d("Children size 2", children.size.toString())
-                        isDialogOpen = false
-
-                    }
-                ) {
-                    Text("Guardar")
-                }
-            },
-            dismissButton = {
-                Button(
-                    onClick = { isDialogOpen = false }
-                ) {
-                    Text("Cancel·lar")
-                }
+        AddChildDialog(
+            isDialogOpen = isDialogOpen,
+            onDismiss = { isDialogOpen = false },
+            onAddChild = { name, surname, email ->
+                addChildToList(tutor.id, name, surname, email)
+                isDialogOpen = false
             }
         )
     }
@@ -343,6 +299,59 @@ fun EditChildDialog(child: Child, onDismiss: () -> Unit, onSave: (Child) -> Unit
             }
         }
     )
+}
+@Composable
+fun AddChildDialog(
+    isDialogOpen: Boolean,
+    onDismiss: () -> Unit,
+    onAddChild: (String, String, String) -> Unit
+) {
+    var childName by remember { mutableStateOf("") }
+    var childSurname by remember { mutableStateOf("") }
+    var childEmail by remember { mutableStateOf("") }
+
+    if (isDialogOpen) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text("Afegir Fill") },
+            text = {
+                Column {
+                    TextField(
+                        value = childName,
+                        onValueChange = { childName = it },
+                        label = { Text("Nom") }
+                    )
+                    TextField(
+                        value = childSurname,
+                        onValueChange = { childSurname = it },
+                        label = { Text("Cognom") }
+                    )
+                    TextField(
+                        value = childEmail,
+                        onValueChange = { childEmail = it },
+                        label = { Text("Correu electrònic") }
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onAddChild(childName, childSurname, childEmail)
+                        onDismiss() // Tancar el diàleg
+                    }
+                ) {
+                    Text("Guardar")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { onDismiss() }
+                ) {
+                    Text("Cancel·lar")
+                }
+            }
+        )
+    }
 }
 
 // Funció per obtenir la imatge del recurs drawable en base al nom
