@@ -44,7 +44,6 @@ class MainActivity : ComponentActivity() {
     private var settings = false
     private val _requestingLocationUpdates = mutableStateOf(false)
 
-    private lateinit var mLocationRequest: LocationRequest
     private lateinit var mLocationSettingsRequest: LocationSettingsRequest
 
     private val sharedPreferences by lazy { getSharedPreferences("permissions", MODE_PRIVATE) }
