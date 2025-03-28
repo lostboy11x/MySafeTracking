@@ -4,6 +4,7 @@ import com.google.android.gms.location.LocationServices
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -41,14 +42,14 @@ import com.google.android.gms.maps.model.*
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.delay
 import androidx.core.graphics.scale
-import com.example.mysafetracking.data.getChildrenCompose
+import com.example.mysafetracking.data.getChildren
 import com.google.android.gms.maps.CameraUpdateFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("MissingPermission")
 @Composable
 fun MapScreen(navController: NavHostController) {
-    val children: List<Child> = getChildrenCompose()
+    val children: List<Child> = getChildren().toMutableList()
     val context = LocalContext.current
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     var userLocation by remember { mutableStateOf<LatLng?>(null) }
@@ -67,6 +68,7 @@ fun MapScreen(navController: NavHostController) {
         }
     }
 
+    Log.d("MapScreen", "Children size: ${children.size}")
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(

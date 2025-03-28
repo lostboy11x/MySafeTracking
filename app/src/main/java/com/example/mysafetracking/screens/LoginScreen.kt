@@ -1,5 +1,6 @@
 package com.example.mysafetracking.screens
 
+import android.util.Log
 import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +42,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
 import com.example.mysafetracking.data.db.viewmodels.TutorViewModel
+import com.example.mysafetracking.data.setTutor
 import com.example.mysafetracking.logic.validateLogin
+import kotlinx.coroutines.launch
 
 // Login
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,6 +58,7 @@ fun LoginScreen(navController: NavHostController, tutorViewModel: TutorViewModel
 
 
     // Validar sol quan l'usuari faci click al botó
+    /*
     fun handleLogin() {
         // Primer validem que el correu i la contrasenya no siguin buits
         errorMessage = validateLogin(email, password)
@@ -65,6 +70,8 @@ fun LoginScreen(navController: NavHostController, tutorViewModel: TutorViewModel
                 if (tutor != null && tutor.password == password) { // Comprova que la contrasenya sigui correcta
                     isValid = true
                     errorMessage = ""
+                    tutorViewModel.loadTutor(tutor) //
+                    Log.d("TutorViewModel", "Tutor loaded: $tutor")
 
                     // Passar l'objecte tutor a la següent pantalla
                     navController.navigate("menuTutor") {
@@ -77,7 +84,32 @@ fun LoginScreen(navController: NavHostController, tutorViewModel: TutorViewModel
                 }
             }
         }
+    }*/
+    val coroutineScope = rememberCoroutineScope()
+
+    fun handleLogin() {
+        errorMessage = validateLogin(email, password)
+        isValid = errorMessage.isEmpty()
+
+        if (isValid) {
+            coroutineScope.launch {
+                val tutor = tutorViewModel.getTutorSync(email)
+                if (tutor != null && tutor.password == password) {
+                    isValid = true
+                    errorMessage = ""
+                    setTutor(tutor)
+                    navController.navigate("menuTutor") {
+                        popUpTo("loginForm") { inclusive = true }
+                        popUpTo("authorize") { inclusive = true }
+                    }
+                } else {
+                    isValid = false
+                    errorMessage = "Usuari o contrasenya incorrectes"
+                }
+            }
+        }
     }
+
 
     Scaffold(
         topBar = {

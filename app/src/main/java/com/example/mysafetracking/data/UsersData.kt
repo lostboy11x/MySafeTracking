@@ -1,7 +1,11 @@
 package com.example.mysafetracking.data
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import com.example.mysafetracking.data.db.entities.TutorEntity
+import com.example.mysafetracking.data.db.entities.toDomainModel
 import java.time.LocalDateTime
+import kotlin.random.Random
 
 // Classe base per a tots els usuaris
 open class User(
@@ -43,7 +47,7 @@ data class Child(
     var guardianId: String = "",
     var currentLocation: Location? = null,
     var childCode: String = generateRandomCode()
-) : User(id, name, surname, email, photoProfile){
+) : User(id, name, surname, email, photoProfile) {
     companion object {
         fun generateRandomCode(length: Int = 12): String {
             val charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
@@ -60,6 +64,16 @@ data class Location(
     var longitude: Double = 0.0,
     val timestamp: String = LocalDateTime.now().toString() // Guarda data i hora actual
 )
+
+// Funció per generar una ubicació aleatòria dins d'un rang
+fun generateRandomLocation(
+    minLat: Double = -90.0, maxLat: Double = 90.0,
+    minLon: Double = -180.0, maxLon: Double = 180.0
+): Location {
+    val latitude = Random.nextDouble(minLat, maxLat)
+    val longitude = Random.nextDouble(minLon, maxLon)
+    return Location(latitude, longitude)
+}
 
 // Imatges
 val drawableImages = listOf(
@@ -98,7 +112,7 @@ val drawableImages = listOf(
 )
 
 // Simulació de dades de nens
-private val children = listOf(
+private var childrenData = mutableListOf(
     Child(
         id = "1",
         name = "Marc",
@@ -115,7 +129,7 @@ private val children = listOf(
         email = "claudia@example.com",
         guardianId = "T2",
         currentLocation = Location(41.6176, 0.6200),
-        photoProfile = drawableImages.random()  // Assumint que vols afegir un valor a "photoProfile"
+        photoProfile = drawableImages.random(),
     ),
     Child(
         id = "3",
@@ -124,7 +138,7 @@ private val children = listOf(
         email = "pau@example.com",
         guardianId = "T1",
         currentLocation = Location(41.3851, 2.1734),
-        photoProfile = drawableImages.random()
+        photoProfile = drawableImages.random(),
     ),
     Child(
         id = "4",
@@ -133,7 +147,7 @@ private val children = listOf(
         email = "aina@example.com",
         guardianId = "T3",
         currentLocation = Location(41.1192, 1.2432),
-        photoProfile = drawableImages.random()
+        photoProfile = drawableImages.random(),
     ),
     Child(
         id = "5",
@@ -142,7 +156,7 @@ private val children = listOf(
         email = "joan@example.com",
         guardianId = "T2",
         currentLocation = Location(41.3851, 2.1734),
-        photoProfile = drawableImages.random()
+        photoProfile = drawableImages.random(),
     ),
     Child(
         id = "6",
@@ -151,7 +165,7 @@ private val children = listOf(
         email = "marta@example.com",
         guardianId = "T1",
         currentLocation = Location(43.357778, 2.458611),
-        photoProfile = drawableImages.random()
+        photoProfile = drawableImages.random(),
     ),
     Child(
         id = "7",
@@ -160,7 +174,7 @@ private val children = listOf(
         email = "miquel@example.com",
         guardianId = "T1",
         currentLocation = Location(44.3543132, 0.458611),
-        photoProfile = drawableImages.random()
+        photoProfile = drawableImages.random(),
     ),
     Child(
         id = "8",
@@ -169,7 +183,7 @@ private val children = listOf(
         email = "raul@example.com",
         guardianId = "T1",
         currentLocation = Location(42.542311, 1.54211),
-        photoProfile = drawableImages.random()
+        photoProfile = drawableImages.random(),
     ),
     Child(
         id = "9",
@@ -178,15 +192,27 @@ private val children = listOf(
         email = "maria@example.com",
         guardianId = "T1",
         currentLocation = Location(42.357778, 1.458611),
-        photoProfile = drawableImages.random()
+        photoProfile = drawableImages.random(),
     )
 )
 
-@Composable
-fun getChildrenCompose(): List<Child> {
-    return children
+fun getChildren(): List<Child> {
+    return childrenData
 }
 
-fun getChildren(): List<Child> {
-    return children
+// Eliminar un fill per ID
+fun removeChild(childId: String) {
+    childrenData.removeIf { it.id == childId }
+}
+
+
+val tutorData by lazy { Tutor() }
+
+fun setTutor(tutorEntity: TutorEntity)  {
+    tutorData.id = tutorEntity.id
+    tutorData.name = tutorEntity.name
+    tutorData.surname = tutorEntity.surname
+    tutorData.email = tutorEntity.email
+    tutorData.photoProfile = tutorEntity.photoProfile
+    tutorData.children = tutorEntity.children.map { it.toDomainModel() }
 }

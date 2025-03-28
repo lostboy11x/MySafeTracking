@@ -8,7 +8,7 @@ import com.example.mysafetracking.data.db.viewmodels.ChildViewModel
 import com.example.mysafetracking.data.db.viewmodels.TutorViewModel
 
 @Composable
-fun NavigationGraph(navController: NavHostController, tutorViewModel: TutorViewModel, childViewModel: ChildViewModel) {
+fun NavigationGraph(navController: NavHostController, tutorViewModel: TutorViewModel) {
     NavHost(navController = navController, startDestination = "splash") {
 
         //Inicialització
@@ -35,7 +35,7 @@ fun NavigationGraph(navController: NavHostController, tutorViewModel: TutorViewM
 
         // Tutor
         composable("menuTutor") {
-            MenuScreenTutor(navController = navController, tutorViewModel = tutorViewModel, childViewModel = childViewModel)
+            MenuScreenTutor(navController = navController)
         }
         composable("mapScreen") {
             MapScreen(navController = navController)

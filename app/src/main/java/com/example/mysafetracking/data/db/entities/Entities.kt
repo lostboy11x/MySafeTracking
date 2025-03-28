@@ -9,6 +9,7 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.example.mysafetracking.data.Child
 import com.example.mysafetracking.data.Location
+import com.example.mysafetracking.data.Tutor
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import java.time.LocalDateTime
@@ -27,6 +28,17 @@ data class TutorEntity(
     var children: List<ChildEntity> = emptyList() // mutable
 )
 
+fun Tutor.toEntity(): TutorEntity {
+    return TutorEntity(
+        id = this.id,
+        name = this.name,
+        surname = this.surname,
+        email = this.email,
+        photoProfile = this.photoProfile,
+        children = this.children.map { it.toEntity() }
+    )
+}
+
 @Entity
 data class ChildEntity(
     @PrimaryKey val id: String, // immutable
@@ -37,6 +49,7 @@ data class ChildEntity(
     var guardianId: String = "", // mutable
     var childCode: String = "" // mutable
 )
+
 fun Child.toEntity(): ChildEntity {
     return ChildEntity(
         id = this.id,
@@ -48,6 +61,16 @@ fun Child.toEntity(): ChildEntity {
         childCode = this.childCode
     )
 }
+
+fun ChildEntity.toDomainModel(): Child {
+    return Child(
+        id = this.id,
+        name = this.name,
+        surname = this.surname,
+        email = this.email
+    )
+}
+
 
 data class ChildWithLocations(
     @Embedded val child: ChildEntity,  // El nen

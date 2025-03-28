@@ -9,21 +9,22 @@ import com.example.mysafetracking.data.Tutor
 import com.example.mysafetracking.data.db.entities.ChildEntity
 import com.example.mysafetracking.data.db.entities.TutorEntity
 import com.example.mysafetracking.data.db.repository.TutorRepository
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class TutorViewModel(private val tutorRepository: TutorRepository) : ViewModel() {
-    private val _tutor = MutableLiveData<Tutor>()
-    val tutor: LiveData<Tutor> get() = _tutor
+    private val _tutor = MutableLiveData<Tutor?>()
+    val tutor: MutableLiveData<Tutor?> get() = _tutor
 
     fun loadTutor(tutorEntity: TutorEntity) {
         viewModelScope.launch {
             val childrenList = tutorEntity.children.mapNotNull { childId ->
-                // Cridar el repositori per obtenir les dades completes dels nens
-                tutorRepository.getChildById(childId.toString())  // Obtenir el nen complet
+                async { tutorRepository.getChildById(childId.toString()) }.await()
             }
             _tutor.value = tutorEntity.toDomainModel(childrenList)
         }
     }
+
 
     fun getTutor(email: String, onResult: (TutorEntity?) -> Unit) {
         viewModelScope.launch {
@@ -36,6 +37,10 @@ class TutorViewModel(private val tutorRepository: TutorRepository) : ViewModel()
         viewModelScope.launch {
             tutorRepository.insertTutor(tutor)
         }
+    }
+
+    suspend fun getTutorSync(email: String): TutorEntity? {
+        return tutorRepository.getTutor(email)
     }
 }
 

@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                 val childRepository = ChildRepository(database.childDao())
                 val childViewModel = remember { ChildViewModel(childRepository, database) }
 
-                NavigationGraph(navController = navController, tutorViewModel = tutorViewModel, childViewModel = childViewModel)
+                NavigationGraph(navController = navController, tutorViewModel = tutorViewModel)
             }
         }
 

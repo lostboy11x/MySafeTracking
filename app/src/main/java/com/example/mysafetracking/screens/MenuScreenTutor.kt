@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,40 +31,39 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
 import com.example.mysafetracking.data.Child
-import com.example.mysafetracking.data.db.entities.toEntity
-import com.example.mysafetracking.data.db.viewmodels.ChildViewModel
-import com.example.mysafetracking.data.db.viewmodels.TutorViewModel
+import com.example.mysafetracking.data.drawableImages
+import com.example.mysafetracking.data.generateRandomLocation
 import com.example.mysafetracking.data.getChildren
+import com.example.mysafetracking.data.removeChild
+import com.example.mysafetracking.data.tutorData
 
 @SuppressLint("MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreenTutor(navController: NavHostController, tutorViewModel: TutorViewModel, childViewModel: ChildViewModel) {
-    val tutor by tutorViewModel.tutor.observeAsState()
+fun MenuScreenTutor(navController: NavHostController) {
     //var children by remember { mutableStateOf(getChildren().toMutableList()) }
-    val childrenState by childViewModel.children.observeAsState(initial = emptyList())
-    var children by remember { mutableStateOf(childrenState) }
+    var children by remember { mutableStateOf(getChildren().toMutableList()) }
     var isEditing by remember { mutableStateOf(false) }
-
-    if (childViewModel.getTutorId() != "") {
-        tutor?.let { childViewModel.setTutorIde(it.id) }
-    }
-
-    // Obtenir els fills associats al tutor quan el tutor es carrega
-    LaunchedEffect(tutor) {
-        tutor?.let {
-            childViewModel.loadChildren(it.id) // Carreguem els nens del tutor
-        }
-    }
+    val tutor = tutorData
 
     fun onSaveChild(updatedChild: Child) {
         // Actualitzem la llista de nens amb el nen editat
         children = children.map {
             if (it.id == updatedChild.id) updatedChild else it
         }.toMutableList()
-
-        childViewModel.updateChild(updatedChild)
-        Log.d("MenuScreenTutor", "Child updated: $updatedChild")
+    }
+    // Funció per afegir un fill
+    fun addChildToList(tutorId: String, name: String, surname: String, email: String) {
+        val newChild = Child(
+            id = (children.size + 1).toString(), // Assegura un ID únic
+            name = name,
+            surname = surname,
+            email = email,
+            guardianId = tutorId,
+            currentLocation = generateRandomLocation(),
+            photoProfile = drawableImages.random()
+        )
+        children = (children + newChild).toMutableList() // Afegim el nou fill a la llista
     }
 
     // Variables per al Popup
@@ -73,27 +71,6 @@ fun MenuScreenTutor(navController: NavHostController, tutorViewModel: TutorViewM
     var childName by remember { mutableStateOf("") }
     var childSurname by remember { mutableStateOf("") }
     var childEmail by remember { mutableStateOf("") }
-    var childPhotoProfile by remember { mutableStateOf("") }
-
-    // Funció per afegir el fill i guardar-lo a la base de dades
-    fun addChildToDatabase() {
-        val newChild = tutor?.let {
-            Child(
-                name = childName,
-                surname = childSurname,
-                email = childEmail,
-                photoProfile = childPhotoProfile,
-                guardianId = it.id,
-                childCode = Child.generateRandomCode()
-            )
-        }
-
-        if (newChild != null) {
-            childViewModel.insertChild(newChild.toEntity())
-        }
-        isDialogOpen = false
-    }
-
 
     Scaffold(
         topBar = {
@@ -173,9 +150,8 @@ fun MenuScreenTutor(navController: NavHostController, tutorViewModel: TutorViewM
                         isEditing = isEditing,
                         onRemove = { childToRemove ->
                             // Actualitzem la llista de nens després de la remoció
-                            children =
-                                children.filter { it.id != childToRemove.id }.toMutableList()
-                            childViewModel.removeChild(childToRemove)
+                            removeChild(childToRemove.id)
+                            children = getChildren().toMutableList()
                         },
                         onSave = { updatedChild -> onSaveChild(updatedChild) },
                         navController = navController
@@ -207,17 +183,19 @@ fun MenuScreenTutor(navController: NavHostController, tutorViewModel: TutorViewM
                         onValueChange = { childEmail = it },
                         label = { Text("Correu electrònic") }
                     )
-                    TextField(
-                        value = childPhotoProfile,
-                        onValueChange = { childPhotoProfile = it },
-                        label = { Text("Foto de perfil") }
-                    )
                 }
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        addChildToDatabase() // Afegim el fill i el guardem a la base de dades
+                        Log.d("Tutor", tutor.toString())
+                        Log.d("Children size 1", children.size.toString())
+                        addChildToList(tutor.id, childName, childSurname, childEmail)
+                        //addChild(tutor.id, childName, childSurname, childEmail)
+                        //children = getChildren().toMutableList()
+                        Log.d("Children size 2", children.size.toString())
+                        isDialogOpen = false
+
                     }
                 ) {
                     Text("Guardar")
