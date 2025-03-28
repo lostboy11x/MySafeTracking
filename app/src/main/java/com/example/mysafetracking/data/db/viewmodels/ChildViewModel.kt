@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mysafetracking.data.Child
+import com.example.mysafetracking.data.Location
 import com.example.mysafetracking.data.db.dao.ChildDao
 import com.example.mysafetracking.data.db.database.AppDatabase
 import com.example.mysafetracking.data.db.entities.ChildEntity
 import com.example.mysafetracking.data.db.entities.ChildWithLocations
+import com.example.mysafetracking.data.db.entities.LocationEntity
 import com.example.mysafetracking.data.db.entities.toEntity
 import com.example.mysafetracking.data.db.repository.ChildRepository
 import kotlinx.coroutines.launch
@@ -91,4 +93,15 @@ fun ChildWithLocations.toDomainModel(): Child {
         childCode = this.child.childCode
     )
 }
+
+
+fun LocationEntity.toDomainModel(): Location {
+    // Converteix LocationEntity a Location
+    return Location(
+        latitude = this.latitude,
+        longitude = this.longitude,
+        timestamp = this.timestamp
+    )
+}
+
 
