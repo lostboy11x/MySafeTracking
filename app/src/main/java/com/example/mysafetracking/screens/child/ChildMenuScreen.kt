@@ -1,6 +1,15 @@
 package com.example.mysafetracking.screens.child
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,16 +41,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import android.provider.Settings
+import androidx.compose.material3.*
+import androidx.core.net.toUri
 import kotlinx.coroutines.delay
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("MissingPermission")
@@ -52,6 +67,77 @@ fun ChildMenuScreen(navController: NavHostController) {
     val context = LocalContext.current
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
 
+    // Variable per controlar la visibilitat del diàleg
+    var permissionGranted by remember { mutableStateOf(false) }
+
+    // Mostrar un diàleg per sol·licitar l'accés a la configuració de localització en segon pla
+    var showPermissionDialog by remember { mutableStateOf(false) }
+    if (showPermissionDialog) {
+        AlertDialog(
+            onDismissRequest = { showPermissionDialog = false },
+            title = { Text("Permís de localització en segon pla") },
+            text = {
+                Text("Per a obtenir la teva ubicació mentre l'aplicació està en segon pla, necessitem que permetis l'accés a la localització en segon pla. Vols anar a la configuració per activar aquest permís?")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        // Redirigeix a la configuració de permisos
+                        showPermissionDialog = false
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        intent.data = "package:${context.packageName}".toUri()
+                        context.startActivity(intent)
+                    }
+                ) {
+                    Text("Acceptar")
+                }
+            }
+        )
+    }
+
+    // Llançador de permisos
+    val backgroundLocationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        permissionGranted = granted
+        if (granted) {
+            Toast.makeText(context, "Permís de localització en segon pla concedit", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Permís de localització en segon pla denegat", Toast.LENGTH_SHORT).show()
+            showPermissionDialog = true
+        }
+    }
+
+    // Repetir la sol·licitud fins que es concedeixi el permís
+    LaunchedEffect(permissionGranted) {
+        if (!permissionGranted) {
+            showPermissionDialog = true
+        } else {
+            showPermissionDialog = false
+        }
+    }
+
+
+    // Comprovar permisos de localització en segon pla
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            when {
+                context.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
+                    // Si ja tenim el permís, comencem a obtenir la localització
+                    startLocationUpdates(fusedLocationClient, cameraPositionState)
+                }
+                else -> {
+                    // Sol·licitem el permís si no el tenim
+                    backgroundLocationPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+
+                }
+            }
+        } else {
+            // Si la versió és anterior a Android Q, no es necessita aquest permís
+            startLocationUpdates(fusedLocationClient, cameraPositionState)
+        }
+    }
+
     LaunchedEffect(Unit) {
         while (true) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
@@ -59,7 +145,7 @@ fun ChildMenuScreen(navController: NavHostController) {
                     userLocation = LatLng(location.latitude, location.longitude)
                 }
             }
-            delay(5000)
+            delay(30000)
         }
     }
     LaunchedEffect(userLocation) {
@@ -128,6 +214,19 @@ fun ChildMenuScreen(navController: NavHostController) {
 
                 }
             }
+        }
+    }
+
+}
+
+@RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
+private fun startLocationUpdates(
+    fusedLocationClient: FusedLocationProviderClient,
+    cameraPositionState: CameraPositionState
+) {
+    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+        location?.let {
+            cameraPositionState.move(CameraUpdateFactory.newLatLng(LatLng(it.latitude, it.longitude)))
         }
     }
 }
