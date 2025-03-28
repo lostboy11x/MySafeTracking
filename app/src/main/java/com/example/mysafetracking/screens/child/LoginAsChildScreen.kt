@@ -1,6 +1,5 @@
-package com.example.mysafetracking.screens
+package com.example.mysafetracking.screens.child
 
-import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

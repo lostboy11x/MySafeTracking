@@ -1,4 +1,4 @@
-package com.example.mysafetracking.screens
+package com.example.mysafetracking.screens.tutor
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image

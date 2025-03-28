@@ -1,4 +1,4 @@
-package com.example.mysafetracking.screens
+package com.example.mysafetracking.screens.general
 
 import android.Manifest
 import android.content.Intent

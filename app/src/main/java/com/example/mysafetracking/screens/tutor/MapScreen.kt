@@ -1,4 +1,4 @@
-package com.example.mysafetracking.screens
+package com.example.mysafetracking.screens.tutor
 
 import com.google.android.gms.location.LocationServices
 import android.annotation.SuppressLint

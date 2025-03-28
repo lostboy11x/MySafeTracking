@@ -1,4 +1,4 @@
-package com.example.mysafetracking.screens
+package com.example.mysafetracking.screens.general
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
