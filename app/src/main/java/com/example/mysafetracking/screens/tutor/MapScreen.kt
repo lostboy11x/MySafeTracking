@@ -1,5 +1,6 @@
 package com.example.mysafetracking.screens.tutor
 
+import android.Manifest
 import com.google.android.gms.location.LocationServices
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
@@ -35,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
 import com.example.mysafetracking.data.Child
@@ -44,6 +46,8 @@ import kotlinx.coroutines.delay
 import androidx.core.graphics.scale
 import com.example.mysafetracking.data.getChildren
 import com.google.android.gms.maps.CameraUpdateFactory
+import android.content.pm.PackageManager
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("MissingPermission")
@@ -55,6 +59,18 @@ fun MapScreen(navController: NavHostController) {
     var userLocation by remember { mutableStateOf<LatLng?>(null) }
     var selectedChildLocation by remember { mutableStateOf<LatLng?>(null) } // Ubicació seleccionada
     val cameraPositionState = rememberCameraPositionState()
+
+    val permissionFineState = ActivityCompat.checkSelfPermission(
+        context,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    )
+    val permissionCoarseState = ActivityCompat.checkSelfPermission(
+        context,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    Log.d("PERMISSIONS", "Fine Location: ${permissionFineState == PackageManager.PERMISSION_GRANTED}")
+    Log.d("PERMISSIONS", "Coarse Location: ${permissionCoarseState == PackageManager.PERMISSION_GRANTED}")
 
     // Actualitzar la ubicació cada 5 segons
     LaunchedEffect(Unit) {
@@ -68,7 +84,6 @@ fun MapScreen(navController: NavHostController) {
         }
     }
 
-    Log.d("MapScreen", "Children size: ${children.size}")
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
