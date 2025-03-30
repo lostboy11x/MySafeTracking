@@ -51,6 +51,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mysafetracking.R
+import com.example.mysafetracking.ui.theme.ButtonGradientEnd
+import com.example.mysafetracking.ui.theme.ButtonGradientStart
 import com.example.mysafetracking.ui.theme.DarkGrayText
 import com.example.mysafetracking.ui.theme.HintGrayText
 import com.example.mysafetracking.ui.theme.TopGradientEnd
@@ -129,8 +131,23 @@ fun LoginAsChildScreen(navController: NavHostController) {
                         onValueChange = { childCode = it },
                         label = { Text("Codi del fill") },
                         leadingIcon = {
-                            Icon(imageVector = Icons.Default.Person, contentDescription = "childCode")
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = "childCode"
+                            )
                         },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = DarkGrayText,
+                            unfocusedTextColor = DarkGrayText,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            cursorColor = TopGradientEnd,
+                            focusedIndicatorColor = TopGradientEnd,
+                            unfocusedIndicatorColor = HintGrayText,
+                            focusedLabelColor = TopGradientEnd,
+                            unfocusedLabelColor = HintGrayText
+                        ),
                         isError = childCode.isNotBlank(),
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
@@ -141,22 +158,42 @@ fun LoginAsChildScreen(navController: NavHostController) {
                     }
 
                     Button(
-
                         enabled = childCode.isNotBlank(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
-                            .padding(horizontal = 16.dp),
+                            .padding(horizontal = 16.dp)
+                            .shadow(elevation = 4.dp, shape = RoundedCornerShape(50)),
                         shape = RoundedCornerShape(50),
-                        colors = ButtonDefaults.buttonColors(containerColor = TopGradientEnd),
                         onClick = {
                             navController.navigate("menuChild") {
                                 popUpTo("logincChild") { inclusive = true }
                                 popUpTo("authorize") { inclusive = true }
                             }
                         },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent, // Fons transparent per a aplicar el degradat
+                            contentColor = Color.White // Color del text del botó
+                        ),
+                        contentPadding = PaddingValues() // Elimina el padding intern del botó
                     ) {
-                        Text(text = "Iniciar", fontSize = 18.sp, color = Color.White)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    brush = Brush.horizontalGradient(
+                                        colors = listOf(ButtonGradientStart, ButtonGradientEnd)
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Iniciar",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
                     }
                 }
             }
@@ -169,15 +206,15 @@ fun LoginAsChildScreen(navController: NavHostController) {
                     .fillMaxWidth()
                     .height(50.dp)
                     .padding(horizontal = 16.dp)
-                    .shadow(elevation = 4.dp, shape = RoundedCornerShape(50)), // Ombra al botó
+                    .shadow(elevation = 4.dp, shape = RoundedCornerShape(50)),
                 shape = RoundedCornerShape(50),
                 contentPadding = PaddingValues(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White) // Fons blanc
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White)
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Tornar enrere",
-                    tint = DarkGrayText // Color del botó
+                    tint = DarkGrayText
                 )
             }
         }

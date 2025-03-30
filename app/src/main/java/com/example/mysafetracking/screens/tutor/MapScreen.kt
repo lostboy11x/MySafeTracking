@@ -47,6 +47,16 @@ import androidx.core.graphics.scale
 import com.example.mysafetracking.data.getChildren
 import com.google.android.gms.maps.CameraUpdateFactory
 import android.content.pm.PackageManager
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import com.example.mysafetracking.ui.theme.DarkGrayText
+import com.example.mysafetracking.ui.theme.TopGradientEnd
+import com.example.mysafetracking.ui.theme.TopGradientStart
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,46 +94,32 @@ fun MapScreen(navController: NavHostController) {
         }
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    // Secció superior (nom de l'app)
-                    Text(
-                        text = stringResource(R.string.app_name),
-                        color = Color.White,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Tornar enrere",
-                            tint = Color.White
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(TopGradientStart, TopGradientEnd)
+                )
             )
-        }
-    ) { paddingValues ->
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .background(MaterialTheme.colorScheme.background) // Color de fons
+                .padding(top = 16.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Secció del mapa (al mig)
-            Box(
+            Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f) // Ocupa el màxim d'espai disponible
-                    .padding(16.dp) // Padding al voltant del mapa
-                    .background(
-                        Color(0xFFF1F1F1), // Color de fons lleuger per al mapa
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .clip(RoundedCornerShape(12.dp)),
+                    .fillMaxHeight(0.5f)
+                    .padding(16.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                border = BorderStroke(5.dp, Color.White)
             ) {
                 GoogleMap(
                     modifier = Modifier.fillMaxSize(),
@@ -176,15 +172,14 @@ fun MapScreen(navController: NavHostController) {
             }
 
             // Secció inferior (Box buit)
-            Box(
+            Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(225.dp) // Altura per al box
-                    .padding(8.dp)
-                    .background(
-                        Color.Transparent, // Color de fons per al box
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    .height(300.dp)
+                    .padding(horizontal = 16.dp), // Mateix padding horitzontal que el mapa
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White), // Fons blanc
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 LazyColumn {
                     items(children) { child -> // Iterar sobre la llista de nens
@@ -220,6 +215,26 @@ fun MapScreen(navController: NavHostController) {
                     }
                 }
 
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .padding(horizontal = 16.dp)
+                    .shadow(elevation = 4.dp, shape = RoundedCornerShape(50)),
+                shape = RoundedCornerShape(50),
+                contentPadding = PaddingValues(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Tornar enrere",
+                    tint = DarkGrayText
+                )
             }
         }
     }

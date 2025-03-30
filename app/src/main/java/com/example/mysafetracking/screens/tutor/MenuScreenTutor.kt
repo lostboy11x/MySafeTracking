@@ -21,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -35,6 +36,10 @@ import com.example.mysafetracking.data.getChildren
 import com.example.mysafetracking.data.getRandonImage
 import com.example.mysafetracking.data.removeChild
 import com.example.mysafetracking.data.tutorData
+import com.example.mysafetracking.ui.theme.DarkGrayText
+import com.example.mysafetracking.ui.theme.HintGrayText
+import com.example.mysafetracking.ui.theme.TopGradientEnd
+import com.example.mysafetracking.ui.theme.TopGradientStart
 
 @SuppressLint("MutableCollectionMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,16 +71,47 @@ fun MenuScreenTutor(navController: NavHostController) {
         children = (children + newChild).toMutableList() // Afegim el nou fill a la llista
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = stringResource(R.string.app_name), color = Color.White)
-                },
-                colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(TopGradientStart, TopGradientEnd)
+                )
             )
-        },
-        bottomBar = {
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Card(
+                modifier = Modifier
+                    .weight(1f) // Permet que Card ocupi tot l'espai disponible
+                    .padding(14.dp),
+                shape = RoundedCornerShape(12.dp), // Arrodoniment de les puntes
+                colors = CardDefaults.cardColors(containerColor = Color.White) // Fons gris
+            ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp) // Padding intern per al contingut
+                ) {
+                    items(children, key = { it.id }) { child ->
+                        ChildItemEditable(
+                            child = child,
+                            isEditing = isEditing,
+                            onRemove = { childToRemove ->
+                                removeChild(childToRemove.id)
+                                children = getChildren().toMutableList()
+                            },
+                            onSave = { updatedChild -> onSaveChild(updatedChild) },
+                            navController = navController
+                        )
+                    }
+                }
+            }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -113,9 +149,8 @@ fun MenuScreenTutor(navController: NavHostController) {
                     Text(if (isEditing) "Fet" else "Editar")
                 }
 
-                // Afegim el fills
                 ExtendedFloatingActionButton(
-                    onClick = { isDialogOpen = true }, // Mostrem el popup per afegir un fill
+                    onClick = { isDialogOpen = true },
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = Color.White,
                     modifier = Modifier
@@ -125,31 +160,6 @@ fun MenuScreenTutor(navController: NavHostController) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = "Afegir Fill/a")
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Afegir")
-                }
-            }
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Llista de nens amb mode d'edició
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(children, key = { it.id }) { child ->
-                    ChildItemEditable(
-                        child = child,
-                        isEditing = isEditing,
-                        onRemove = { childToRemove ->
-                            // Actualitzem la llista de nens després de la remoció
-                            removeChild(childToRemove.id)
-                            children = getChildren().toMutableList()
-                        },
-                        onSave = { updatedChild -> onSaveChild(updatedChild) },
-                        navController = navController
-                    )
                 }
             }
         }
@@ -319,17 +329,53 @@ fun AddChildDialog(
                     TextField(
                         value = childName,
                         onValueChange = { childName = it },
-                        label = { Text("Nom") }
+                        label = { Text("Nom") },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = DarkGrayText,
+                            unfocusedTextColor = DarkGrayText,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            cursorColor = TopGradientEnd,
+                            focusedIndicatorColor = TopGradientEnd,
+                            unfocusedIndicatorColor = HintGrayText,
+                            focusedLabelColor = TopGradientEnd,
+                            unfocusedLabelColor = HintGrayText
+                        ),
                     )
                     TextField(
                         value = childSurname,
                         onValueChange = { childSurname = it },
-                        label = { Text("Cognom") }
+                        label = { Text("Cognom") },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = DarkGrayText,
+                            unfocusedTextColor = DarkGrayText,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            cursorColor = TopGradientEnd,
+                            focusedIndicatorColor = TopGradientEnd,
+                            unfocusedIndicatorColor = HintGrayText,
+                            focusedLabelColor = TopGradientEnd,
+                            unfocusedLabelColor = HintGrayText
+                        ),
                     )
                     TextField(
                         value = childEmail,
                         onValueChange = { childEmail = it },
-                        label = { Text("Correu electrònic") }
+                        label = { Text("Correu electrònic") },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = DarkGrayText,
+                            unfocusedTextColor = DarkGrayText,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            cursorColor = TopGradientEnd,
+                            focusedIndicatorColor = TopGradientEnd,
+                            unfocusedIndicatorColor = HintGrayText,
+                            focusedLabelColor = TopGradientEnd,
+                            unfocusedLabelColor = HintGrayText
+                        ),
                     )
                 }
             },
