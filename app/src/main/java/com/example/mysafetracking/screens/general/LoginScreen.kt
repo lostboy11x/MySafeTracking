@@ -63,7 +63,6 @@ import com.example.mysafetracking.ui.theme.TopGradientStart
 import kotlinx.coroutines.launch
 
 // Login
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavHostController, tutorViewModel: TutorViewModel) {
     var email by remember { mutableStateOf("") }
@@ -72,37 +71,9 @@ fun LoginScreen(navController: NavHostController, tutorViewModel: TutorViewModel
     var errorMessage by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
-
-    // Validar sol quan l'usuari faci click al botó
-    /*
-    fun handleLogin() {
-        // Primer validem que el correu i la contrasenya no siguin buits
-        errorMessage = validateLogin(email, password)
-        isValid = errorMessage.isEmpty()
-
-        if (isValid) {
-            // Comprovar les credencials a la base de dades Room
-            tutorViewModel.getTutor(email) { tutor ->
-                if (tutor != null && tutor.password == password) { // Comprova que la contrasenya sigui correcta
-                    isValid = true
-                    errorMessage = ""
-                    tutorViewModel.loadTutor(tutor) //
-                    Log.d("TutorViewModel", "Tutor loaded: $tutor")
-
-                    // Passar l'objecte tutor a la següent pantalla
-                    navController.navigate("menuTutor") {
-                        popUpTo("loginForm") { inclusive = true }
-                        popUpTo("authorize") { inclusive = true }
-                    }
-                } else {
-                    isValid = false
-                    errorMessage = "Usuari o contrasenya incorrectes"
-                }
-            }
-        }
-    }*/
     val coroutineScope = rememberCoroutineScope()
 
+    // Validar sol quan l'usuari faci click al botó
     fun handleLogin() {
         errorMessage = validateLogin(email, password)
         isValid = errorMessage.isEmpty()

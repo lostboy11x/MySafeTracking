@@ -60,7 +60,7 @@ fun NavigationGraph(navController: NavHostController, tutorViewModel: TutorViewM
 
         // Extra
         composable("gifScreen") {
-            GifDrip(navController = navController)  // La pantalla de GIF
+            GifDrip(navController = navController)
         }
     }
 }

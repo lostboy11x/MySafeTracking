@@ -62,22 +62,7 @@ import com.example.mysafetracking.ui.theme.TopGradientStart
 @Composable
 fun LoginAsChildScreen(navController: NavHostController) {
     var childCode by remember { mutableStateOf("") }
-    var isValid by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
-
-    // Validar sol quan l'usuari faci click al botó
-    /*
-    fun handleLoginChild() {
-        errorMessage = validateLogin(childCode, password)
-        isValid = errorMessage.isEmpty()
-        if (isValid) {
-            navController.navigate("menuTutor") {
-                popUpTo("loginForm") { inclusive = true }
-                popUpTo("authorize") { inclusive = true }
-            }
-        }
-    }
-     */
 
     Box(
         modifier = Modifier
