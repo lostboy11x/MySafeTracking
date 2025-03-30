@@ -53,8 +53,21 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import android.provider.Settings
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import com.example.mysafetracking.ui.theme.LightGray
+import com.example.mysafetracking.ui.theme.TopGradientEnd
+import com.example.mysafetracking.ui.theme.TopGradientStart
 import kotlinx.coroutines.delay
 
 
@@ -156,6 +169,54 @@ fun ChildMenuScreen(navController: NavHostController) {
         }
     }
 
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(TopGradientStart, TopGradientEnd)
+                )
+            )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Card que conté el mapa
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.5f)
+                    .padding(16.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                border = BorderStroke(5.dp, Color.White)
+            ) {
+                GoogleMap(
+                    modifier = Modifier.fillMaxSize(),
+                    properties = MapProperties(isMyLocationEnabled = true),
+                    uiSettings = MapUiSettings(zoomControlsEnabled = false),
+                    cameraPositionState = cameraPositionState
+                ) {
+                    // Marker de la ubicació de l'usuari
+                    userLocation?.let {
+                        Marker(
+                            state = MarkerState(position = it),
+                            title = "Estàs aquí",
+                            snippet = "Ubicació actual"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -216,8 +277,8 @@ fun ChildMenuScreen(navController: NavHostController) {
             }
         }
     }
-
 }
+ */
 
 @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
 private fun startLocationUpdates(
@@ -230,3 +291,4 @@ private fun startLocationUpdates(
         }
     }
 }
+

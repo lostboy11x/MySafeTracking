@@ -5,27 +5,35 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuDefaults.outlinedTextFieldColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,18 +41,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.mysafetracking.R
 import com.example.mysafetracking.data.db.entities.TutorEntity
 import com.example.mysafetracking.data.db.viewmodels.TutorViewModel
 import com.example.mysafetracking.logic.validateRegister
+import com.example.mysafetracking.ui.theme.ButtonGradientEnd
+import com.example.mysafetracking.ui.theme.ButtonGradientStart
+import com.example.mysafetracking.ui.theme.DarkGrayText
+import com.example.mysafetracking.ui.theme.HintGrayText
+import com.example.mysafetracking.ui.theme.LightGray
+import com.example.mysafetracking.ui.theme.TopGradientEnd
+import com.example.mysafetracking.ui.theme.TopGradientStart
 import java.util.UUID
+
 
 // Register
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,169 +101,276 @@ fun RegisterScreen(navController: NavHostController, tutorViewModel: TutorViewMo
         }
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.app_name),
-                        color = Color.White,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Tornar enrere",
-                            tint = Color.White
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Background Structure
+        Column(modifier = Modifier.fillMaxSize()) {
+            // Top Gradient Section
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.27f) // Ajustem l'alçada del gradient
+                    .background(
+                        brush = Brush.linearGradient(
+                            colors = listOf(TopGradientStart, TopGradientEnd)
                         )
-                    }
-                },
-                colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+                    )
+                    .padding(start = 24.dp, top = 40.dp, end = 24.dp, bottom = 16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Text(
+                        text = "Benvingut/da\nCrea el teu compte !",
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        lineHeight = 40.sp,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+            // Bottom White Section
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.84f) // Augmentem l'espai del quadre blanc
+                    .background(LightGray)
             )
         }
-    ) { paddingValues ->
-        Box(
+
+        // Form Card positioned over the background sections
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(paddingValues),
-            contentAlignment = Alignment.Center
+                .padding(top = 130.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                // Títol
-                Text(
-                    text = "Crear un Compte",
-                    fontSize = 24.sp,
-                    color = Color.White,
-                    modifier = Modifier.padding(bottom = 32.dp)
-                )
-
-                // Camp nom
-                OutlinedTextField(
-                    value = firstName,
-                    onValueChange = { firstName = it },
-                    label = { Text("Nom") },
-                    leadingIcon = {
-                        Icon(imageVector = Icons.Default.Person, contentDescription = "Nom")
-                    },
-                    isError = firstName.isBlank(),
-                    singleLine = true,
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    colors = outlinedTextFieldColors(
-                        focusedBorderColor = if (firstName.isNotBlank()) Color.Green else Color.Gray, // Verd si no està buit
-                        unfocusedBorderColor = if (firstName.isNotBlank()) Color.Green else Color.Gray, // Verd si no està buit
-                        errorBorderColor = Color.Red // Vermell si està buit
-                    )
-                )
-
-                // Camp cognoms
-                OutlinedTextField(
-                    value = lastName,
-                    onValueChange = { lastName = it },
-                    label = { Text("Cognom") },
-                    leadingIcon = {
-                        Icon(imageVector = Icons.Default.Person, contentDescription = "Cognom")
-                    },
-                    isError = lastName.isBlank(),
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    colors = outlinedTextFieldColors(
-                        focusedBorderColor = if (lastName.isNotBlank()) Color.Green else Color.Gray, // Verd si no està buit
-                        unfocusedBorderColor = if (lastName.isNotBlank()) Color.Green else Color.Gray, // Verd si no està buit
-                        errorBorderColor = Color.Red // Vermell si està buit
-                    )
-                )
-
-                // Camp email
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Email") },
-                    leadingIcon = {
-                        Icon(imageVector = Icons.Default.Email, contentDescription = "Email")
-                    },
-                    isError = email.isNotBlank() && !Patterns.EMAIL_ADDRESS.matcher(email)
-                        .matches(),
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    colors = outlinedTextFieldColors(
-                        focusedBorderColor = if (email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(
-                                email
-                            ).matches()
-                        ) Color.Green else Color.Gray, // Verd quan l'email sigui vàlid
-                        unfocusedBorderColor = if (email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(
-                                email
-                            ).matches()
-                        ) Color.Green else Color.Gray, // Verd quan l'email sigui vàlid
-                        errorBorderColor = Color.Red // Vermell en cas d'error
-                    )
-                )
-
-                // Camp de contrasenya
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = {
-                        password = it
-                        //errorMessage = validateLogin(email, password)
-                    },
-                    label = { Text("Contrasenya") },
-                    leadingIcon = {
-                        Icon(imageVector = Icons.Default.Lock, contentDescription = "Contrasenya")
-                    },
-                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                    //visualTransformation = PasswordVisualTransformation(),
-                    isError = password.isNotBlank() && password.length < 8,
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    colors = outlinedTextFieldColors(
-                        focusedBorderColor = if (password.isNotBlank() && password.length >= 8) Color.Green else Color.Gray, // Verd quan la contrasenya té almenys 8 caràcters
-                        unfocusedBorderColor = if (password.isNotBlank() && password.length >= 8) Color.Green else Color.Gray, // Verd quan la contrasenya té almenys 8 caràcters
-                        errorBorderColor = Color.Red // Vermell en cas d'error
-                    )
-                )
-
-                // Mostrar missatge d'error si la validació falla
-                if (errorMessage.isNotEmpty()) {
-                    Text(text = errorMessage, color = Color.Red, fontSize = 14.sp)
-                }
-
-                // Botó de registre
-                Button(
-                    onClick = {
-                        handleRegister()
-                    },
-                    enabled = firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && password.isNotBlank(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 48.dp, max = 56.dp)
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = 24.dp, vertical = 32.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text(text = "Registrar-se", fontSize = 18.sp)
-                }
 
-                // Botó de login
-                TextButton(
-                    onClick = {
-                        //navController.popBackStack()
-                        navController.navigate("loginForm") {
-                            popUpTo("register") { inclusive = true }
+                    // Camp nom
+                    TextField(
+                        value = firstName,
+                        onValueChange = { firstName = it },
+                        label = { Text("Nom") },
+                        placeholder = { Text("Marc", color = HintGrayText) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = DarkGrayText,
+                            unfocusedTextColor = DarkGrayText,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            cursorColor = TopGradientEnd,
+                            focusedIndicatorColor = TopGradientEnd,
+                            unfocusedIndicatorColor = HintGrayText,
+                            focusedLabelColor = TopGradientEnd,
+                            unfocusedLabelColor = HintGrayText
+                        ),
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Default.Person, contentDescription = "Nom", tint = HintGrayText)
+                        },
+                        trailingIcon = {
+                            if (firstName.isNotBlank()) {
+                                Icon(imageVector = Icons.Default.Check, contentDescription = "Nom", tint = TopGradientEnd)
+                            }
                         }
-                    },
-                    modifier = Modifier.padding(top = 16.dp)
-                ) {
-                    Text(text = "Ja tinc un compte", fontSize = 16.sp)
+                    )
+
+                    // Camp cognom
+                    TextField(
+                        value = lastName,
+                        onValueChange = { lastName = it },
+                        label = { Text("Cognom") },
+                        placeholder = { Text("Gilabert", color = HintGrayText) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = DarkGrayText,
+                            unfocusedTextColor = DarkGrayText,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            cursorColor = TopGradientEnd,
+                            focusedIndicatorColor = TopGradientEnd,
+                            unfocusedIndicatorColor = HintGrayText,
+                            focusedLabelColor = TopGradientEnd,
+                            unfocusedLabelColor = HintGrayText
+                        ),
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Default.Person, contentDescription = "Cognom", tint = HintGrayText)
+                        },
+                        trailingIcon = {
+                            if (lastName.isNotBlank()) {
+                                Icon(imageVector = Icons.Default.Check, contentDescription = "Cognom", tint = TopGradientEnd)
+                            }
+                        }
+                    )
+
+                    // Camp email
+                    TextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        label = { Text("Email") },
+                        placeholder = { Text("exemple@exemple.com", color = HintGrayText) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = DarkGrayText,
+                            unfocusedTextColor = DarkGrayText,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            cursorColor = TopGradientEnd,
+                            focusedIndicatorColor = TopGradientEnd,
+                            unfocusedIndicatorColor = HintGrayText,
+                            focusedLabelColor = TopGradientEnd,
+                            unfocusedLabelColor = HintGrayText
+                        ),
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Default.Email, contentDescription = "Email", tint = HintGrayText)
+                        },
+                        trailingIcon = {
+                            if (email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                                Icon(imageVector = Icons.Default.Check, contentDescription = "Email", tint = TopGradientEnd)
+                            }
+                        }
+                    )
+
+                    // Camp contrasenya
+                    TextField(
+                        value = password,
+                        onValueChange = { password = it },
+                        label = { Text("Contrasenya") },
+                        placeholder = { Text("********", color = HintGrayText) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                Icon(
+                                    imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                    contentDescription = "Mostrar Contrasenya",
+                                    tint = HintGrayText
+                                )
+                            }
+                        },
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = DarkGrayText,
+                            unfocusedTextColor = DarkGrayText,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            cursorColor = TopGradientEnd,
+                            focusedIndicatorColor = TopGradientEnd,
+                            unfocusedIndicatorColor = HintGrayText,
+                            focusedLabelColor = TopGradientEnd,
+                            unfocusedLabelColor = HintGrayText
+                        ),
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Default.Lock, contentDescription = "Contrasenya", tint = HintGrayText)
+                        },
+                    )
+
+                    // Mostrar missatge d'error si la validació falla
+                    if (errorMessage.isNotEmpty()) {
+                        Text(text = errorMessage, color = Color.Red, fontSize = 14.sp)
+                    } else {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+
+                    // Botó de registre
+                    Button(
+                        onClick = { handleRegister() },
+                        enabled = firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && password.isNotBlank(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        shape = RoundedCornerShape(50),
+                        contentPadding = PaddingValues(),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    Brush.horizontalGradient(
+                                        colors = listOf(ButtonGradientStart, ButtonGradientEnd)
+                                    )
+                                )
+                                .padding(horizontal = 16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "REGISTRAR-SE", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botó de tornar enrere sota el Card
+            Button(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .padding(horizontal = 16.dp)
+                    .shadow(elevation = 4.dp, shape = RoundedCornerShape(50)), // Ombra al botó
+                shape = RoundedCornerShape(50),
+                contentPadding = PaddingValues(),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White) // Fons blanc
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Tornar enrere",
+                    tint = DarkGrayText // Color del botó
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Botó de login
+            Row(
+                modifier = Modifier.padding(bottom = 32.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Ja tens un compte? ",
+                    fontSize = 14.sp,
+                    color = DarkGrayText,
+                    textDecoration = TextDecoration.Underline
+                )
+                TextButton(onClick = {
+                    navController.navigate("loginForm") {
+                        popUpTo("register") { inclusive = true }
+                    }
+                }) {
+                    Text(
+                        text = "Inicia Sessió",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TopGradientEnd,
+                        textDecoration = TextDecoration.Underline
+                    )
                 }
             }
         }
